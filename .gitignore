@@ -1,0 +1,4 @@
+.idea
+*.pyc
+workdir/static_root/
+.venv/

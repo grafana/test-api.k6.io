@@ -1,0 +1,56 @@
+[
+{
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$150000$1RpJXW7NJBz5$NggXIVpoZMbHePb6T1x9or4o1gncr2bul4ITBSFCjZo=",
+        "last_login": "2019-06-27T14:11:36Z",
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "Admin",
+        "last_name": "Bert",
+        "email": "developers@loadimpact.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2019-06-25T13:56:24Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$150000$9EXAaaEf8DoJ$NvH/2P0X8Om5/syYxFw97lgeBOzPbwd01ZZBcJSDSmw=",
+        "last_login": "2019-06-27T14:10:17.776Z",
+        "is_superuser": false,
+        "username": "user",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2019-06-27T14:07:08.697Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "api.crocodile",
+    "pk": 1,
+    "fields": {
+        "name": "Bert",
+        "sex": "M",
+        "date_of_birth": "2017-06-27"
+    }
+},
+{
+    "model": "api.crocodile",
+    "pk": 2,
+    "fields": {
+        "name": "Ed",
+        "sex": "M",
+        "date_of_birth": "2011-06-27"
+    }
+}
+]
