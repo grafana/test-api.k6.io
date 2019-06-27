@@ -10,7 +10,7 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
 
-    url(r'^api-auth/', include('rest_framework.urls')),
+    url(r'^auth/cookie/', include('rest_framework.urls', namespace='rest_framework')),
 
     path('crocodiles/', CrocodileViewSet.as_view({'get': 'list'})),
 
