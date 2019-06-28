@@ -5,4 +5,4 @@ from apps.api.models import Crocodile
 
 @admin.register(Crocodile)
 class AuthorAdmin(admin.ModelAdmin):
-    list_display = ['name', 'sex', 'age']
+    list_display = ['name', 'sex', 'owner', 'age']
