@@ -1,3 +1,4 @@
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import mixins, viewsets
 
 # from api.models.crocodiles import Crocodile
@@ -7,8 +8,8 @@ from apps.api.models.crocodiles import Crocodile
 from apps.api.serializers.crocodiles import CrocodileSerializer
 
 
-class CrocodileViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
+class CrocodileViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.RetrieveModelMixin):
     queryset = Crocodile.objects.all()
     serializer_class = CrocodileSerializer
-    permission_classes = (IsAuthenticated,)
-    
+    # authentication_classes = []
+    permission_classes = [IsAuthenticated]
