@@ -59,7 +59,7 @@ export default () => {
       "date_of_birth": "1982-03-03",}
       );
 
-    
+
 
 
     http.post(`${BASE_URL}/auth/cookie/logout/`, { username: 'user', password: 'test123!'});
