@@ -31,7 +31,8 @@ class MyCrocodilesViewSet(mixins.ListModelMixin,
         """
         if Crocodile.objects.filter(owner=self.request.user).count() > self.MAX_CROC_LIMIT:
             raise ValidationError("Error: you can have up to {} "
-                                  "crocodiles on your account.".format(self.MAX_CROC_LIMIT))
+                                  "crocodiles on your account. "
+                                  "You have already reached the limit.".format(self.MAX_CROC_LIMIT))
 
         serializer.save(owner=self.request.user)
 
