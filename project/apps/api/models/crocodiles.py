@@ -21,3 +21,5 @@ class Crocodile(models.Model):
     def age(self):
         return relativedelta(datetime.date.today(), self.date_of_birth).years
 
+    def __str__(self):
+        return '({}) {}'.format(self.id, self.name)

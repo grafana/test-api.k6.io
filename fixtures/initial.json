@@ -4,7 +4,7 @@
     "pk": 1,
     "fields": {
         "password": "pbkdf2_sha256$150000$1RpJXW7NJBz5$NggXIVpoZMbHePb6T1x9or4o1gncr2bul4ITBSFCjZo=",
-        "last_login": "2019-06-27T14:11:36Z",
+        "last_login": "2019-07-01T14:31:50.689Z",
         "is_superuser": true,
         "username": "admin",
         "first_name": "Admin",
@@ -22,15 +22,15 @@
     "pk": 2,
     "fields": {
         "password": "pbkdf2_sha256$150000$9EXAaaEf8DoJ$NvH/2P0X8Om5/syYxFw97lgeBOzPbwd01ZZBcJSDSmw=",
-        "last_login": "2019-06-27T14:10:17.776Z",
+        "last_login": "2019-07-02T10:31:10.660Z",
         "is_superuser": false,
         "username": "user",
         "first_name": "",
         "last_name": "",
-        "email": "",
+        "email": "user@example.com",
         "is_staff": false,
         "is_active": true,
-        "date_joined": "2019-06-27T14:07:08.697Z",
+        "date_joined": "2019-06-27T14:07:08Z",
         "groups": [],
         "user_permissions": []
     }
@@ -41,7 +41,8 @@
     "fields": {
         "name": "Bert",
         "sex": "M",
-        "date_of_birth": "2017-06-27"
+        "date_of_birth": "2017-06-27",
+        "owner": null
     }
 },
 {
@@ -50,7 +51,68 @@
     "fields": {
         "name": "Ed",
         "sex": "M",
-        "date_of_birth": "2011-06-27"
+        "date_of_birth": "2011-06-27",
+        "owner": null
+    }
+},
+{
+    "model": "api.crocodile",
+    "pk": 3,
+    "fields": {
+        "name": "Lyle the Crocodile",
+        "sex": "M",
+        "date_of_birth": "2019-06-28",
+        "owner": null
+    }
+},
+{
+    "model": "api.crocodile",
+    "pk": 4,
+    "fields": {
+        "name": "Solomon",
+        "sex": "M",
+        "date_of_birth": "2019-06-28",
+        "owner": null
+    }
+},
+{
+    "model": "api.crocodile",
+    "pk": 5,
+    "fields": {
+        "name": "The gharial",
+        "sex": "F",
+        "date_of_birth": "2009-06-28",
+        "owner": null
+    }
+},
+{
+    "model": "api.crocodile",
+    "pk": 6,
+    "fields": {
+        "name": "Sang Buaya",
+        "sex": "F",
+        "date_of_birth": "1019-06-28",
+        "owner": null
+    }
+},
+{
+    "model": "api.crocodile",
+    "pk": 7,
+    "fields": {
+        "name": "Sobek",
+        "sex": "F",
+        "date_of_birth": "2014-06-28",
+        "owner": null
+    }
+},
+{
+    "model": "api.crocodile",
+    "pk": 8,
+    "fields": {
+        "name": "Curious George",
+        "sex": "M",
+        "date_of_birth": "1982-03-03",
+        "owner": null
     }
 }
 ]
