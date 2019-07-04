@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  test_api:
+    image: test_api
+    build: .
+    command: bash -c "./devops/loaddata.sh && python project/manage.py makemigrations && python project/manage.py migrate && python project/manage.py runserver 0.0.0.0:8000"
+    container_name: test_api
+    volumes:
+      - .:/api.test.loadimpact.com
+    ports:
+      - "9000:8000"
+  test_api_db:
+    image: postgres:11
