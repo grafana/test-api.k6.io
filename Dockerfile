@@ -48,7 +48,6 @@ RUN \
 
 # Collect static files
 RUN python project/manage.py collectstatic --noinput -v1
-RUN python project/manage.py migrate --noinput
 
 #CMD tail -f /dev/null
 
