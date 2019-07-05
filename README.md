@@ -1,9 +1,12 @@
-# test.api.k6.io
+# test-api.loadimpact.com
 
-This project includes all kinds of APIs, authentication mechanisms and whatever production-like application examples we need.
+This project includes all kinds of APIs, authentication mechanisms, endpoints and whatever 
+production-like application examples we need.
 
 
 ### Load initial data
+We have a fixture with initial data that populated the prod/dev database with some users and crocodiles.
+This generally is run automatically via docker-compose.
 
 ```bash
 cd test_api
@@ -12,16 +15,17 @@ cd test_api
 
 ### Admin access
 
-You can create/edit the existing objects using admin interface
+You can create/edit the existing objects using admin interface. We have a default admin provisioned by the data fixture.
 
-http://test.api.loadimpact.com/admin
+http://test-api.loadimpact.com/admin
 
     username: admin
     password: crocodil3
 
 
-# Browseable API
+## Browseable API
 
-Nice feature of this project is that app APIs are "browseable", and can be easily explored by developers.
-Click on one of the endpoints, for example http://test.api.loadimpact.com/crocodiles
+Nice feature of this project is that APIs are "browseable", and can be easily explored by developers via the web interface.
+
+Explore this by clicking on one of the endpoints, for example [/public/crocodiles/](http://test-api.loadimpact.com/public/crocodiles)
 and login (top right corner) with one of the default users.
