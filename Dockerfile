@@ -7,7 +7,7 @@ ENV PYTHONUNBUFFERED 1
 RUN \
   apt update && \
   apt install -y curl git htop man unzip vim wget && \
-  apt-get install -y build-essential
+  apt-get install -y build-essential default-libmysqlclient-dev
 
 
 # Install nginx and other apt dependencies.
@@ -48,6 +48,7 @@ RUN \
 
 # Collect static files
 RUN python project/manage.py collectstatic --noinput -v1
+RUN python project/manage.py migrate --noinput
 
 #CMD tail -f /dev/null
 
