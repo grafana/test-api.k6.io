@@ -1,6 +1,6 @@
 from .._base import *
 
-DEBUG = True
+DEBUG = False
 
 
 # TODO: switch to RDS when it's up and running
