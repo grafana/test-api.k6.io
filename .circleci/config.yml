@@ -1,0 +1,23 @@
+version: 2
+jobs:
+  build-and-deploy:
+    working_directory: ~/test-api.loadimpact.com
+    docker:
+      - image: circleci/python:3.7
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker build -t loadimpact/test-api.loadimpact.com:latest .
+            docker tag loadimpact/test-api.loadimpact.com:latest loadimpact/test-api.loadimpact.com:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
+            docker push loadimpact/test-api.loadimpact.com:latest
+            docker push loadimpact/test-api.loadimpact.com:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
+      - deploy:
+          command: ./deploy.sh
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build-and-deploy

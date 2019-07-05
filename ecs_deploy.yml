@@ -1,0 +1,9 @@
+---
+task_family: test-api-loadimpact-com
+image: loadimpact/test-api.loadimpact.com
+
+cluster:
+  production: demosites-cluster-production
+
+default_tags:
+  production: latest
