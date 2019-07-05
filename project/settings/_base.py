@@ -1,8 +1,8 @@
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-WORK_DIR = os.path.join(BASE_DIR, '../workdir')
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(PROJECT_DIR)
+WORK_DIR = os.path.join(BASE_DIR, 'workdir')
 
 SECRET_KEY = 'yglwkx*30p3wl_ef#)p)26+%=gm#4urb#3mv18@cfzkegggn%)'
 
@@ -36,8 +36,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'apps/pages/templates'),
-            os.path.join(BASE_DIR, 'apps/api/templates'),
+            os.path.join(PROJECT_DIR, 'apps/pages/templates'),
+            os.path.join(PROJECT_DIR, 'apps/api/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -84,9 +84,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(WORK_DIR, 'static_root')
+STATIC_RESOURCES = os.path.join(BASE_DIR, 'static_resources')
 
 STATIC_DIRS = (
     STATIC_ROOT,
+    STATIC_RESOURCES,
 )
 
 

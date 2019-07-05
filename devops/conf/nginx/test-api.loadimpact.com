@@ -1,5 +1,5 @@
 upstream test_api {
-    server unix:/var/lib/uwsgi/test-api.sock;
+    server unix:/var/lib/uwsgi/uwsgi_test_api.sock;
 }
 
 server {
@@ -8,7 +8,7 @@ server {
     client_max_body_size 10M;
 
     location /static {
-        alias /srv/test-api.loadimpact.com/static;
+        alias /srv/test-api.loadimpact.com/workdir/static_root/;
         access_log off;
     }
 

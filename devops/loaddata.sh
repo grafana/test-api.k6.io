@@ -2,4 +2,4 @@
 
 # run this from the test_api directory
 
-./project/manage.py loaddata fixtures/initial.json
+./project/manage.py loaddata devops/fixtures/initial.json

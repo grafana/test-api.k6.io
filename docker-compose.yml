@@ -1,14 +1,19 @@
 version: '3'
 
+# this is used only for development. We don't use it in production.
+# I'm overriding bunch of things defined in the Dockerfile
+
+
 services:
   test_api:
     image: test_api
     build: .
-    command: bash -c "./devops/loaddata.sh && python project/manage.py makemigrations && python project/manage.py migrate && python project/manage.py runserver 0.0.0.0:8000"
+    command: bash -c "python project/manage.py makemigrations && python project/manage.py migrate && ./devops/loaddata.sh && python project/manage.py runserver 0.0.0.0:8000"
     container_name: test_api
+    working_dir: /srv/test-api.loadimpact.com
     volumes:
-      - .:/api.test.loadimpact.com
+      - .:/srv/test-api.loadimpact.com
     ports:
-      - "9000:8000"
-  test_api_db:
-    image: postgres:11
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=settings.api.dev
