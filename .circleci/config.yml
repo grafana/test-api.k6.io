@@ -15,7 +15,7 @@ jobs:
             docker push loadimpact/test-api.loadimpact.com:latest
             docker push loadimpact/test-api.loadimpact.com:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
       - deploy:
-          command: ./deploy.sh
+          command: sudo -E ./deploy.sh
 workflows:
   version: 2
   build_and_deploy:
