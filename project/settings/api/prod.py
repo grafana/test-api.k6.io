@@ -5,11 +5,17 @@ from .._base import *
 
 DEBUG = False
 
+sentry_sdk.init(
+    dsn="https://a8eb61375aaa4770a1d218fddfeeadc0@sentry.io/1497944",
+    integrations=[DjangoIntegration()]
+)
+
+
 # TODO: switch to RDS when it's up and running
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(WORK_DIR, 'db.sqlite3'),
     }
     # 'default': {
     #     'ENGINE': 'django.db.backends.postgresql',
@@ -21,8 +27,3 @@ DATABASES = {
 }
 
 ROOT_URLCONF = 'urls.prod'
-
-sentry_sdk.init(
-    dsn="https://a8eb61375aaa4770a1d218fddfeeadc0@sentry.io/1497944",
-    integrations=[DjangoIntegration()]
-)
