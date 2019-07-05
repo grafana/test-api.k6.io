@@ -1,7 +1,9 @@
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
 from .._base import *
 
 DEBUG = False
-
 
 # TODO: switch to RDS when it's up and running
 DATABASES = {
@@ -19,3 +21,8 @@ DATABASES = {
 }
 
 ROOT_URLCONF = 'urls.prod'
+
+sentry_sdk.init(
+    dsn="https://a8eb61375aaa4770a1d218fddfeeadc0@sentry.io/1497944",
+    integrations=[DjangoIntegration()]
+)
