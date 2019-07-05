@@ -7,3 +7,10 @@ cluster:
 
 default_tags:
   production: latest
+
+task:
+  command:
+    - python
+    - project/manage.py
+    - migrate
+    - --noinput
