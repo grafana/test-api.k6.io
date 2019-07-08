@@ -1,245 +1,458 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="icon" href="https://k6.io/favicon.png" sizes="32x32">
-  <title>jslib.k6.io - JS std lib</title>
-  <style>code[class*=language-],pre[class*=language-]{color:#000;background:0 0;text-shadow:0 1px #fff;font-family:Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace;font-size:1em;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}code[class*=language-] ::-moz-selection,code[class*=language-]::-moz-selection,pre[class*=language-] ::-moz-selection,pre[class*=language-]::-moz-selection{text-shadow:none;background:#b3d4fc}code[class*=language-] ::selection,code[class*=language-]::selection,pre[class*=language-] ::selection,pre[class*=language-]::selection{text-shadow:none;background:#b3d4fc}@media print{code[class*=language-],pre[class*=language-]{text-shadow:none}}pre[class*=language-]{padding:1em;margin:.5em 0;overflow:auto}:not(pre)>code[class*=language-],pre[class*=language-]{background:#f5f2f0}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal}.token.cdata,.token.comment,.token.doctype,.token.prolog{color:#708090}.token.punctuation{color:#999}.namespace{opacity:.7}.token.boolean,.token.constant,.token.deleted,.token.number,.token.property,.token.symbol,.token.tag{color:#905}.token.attr-name,.token.builtin,.token.char,.token.inserted,.token.selector,.token.string{color:#690}.language-css .token.string,.style .token.string,.token.entity,.token.operator,.token.url{color:#9a6e3a;background:hsla(0,0%,100%,.5)}.token.atrule,.token.attr-value,.token.keyword{color:#07a}.token.class-name,.token.function{color:#dd4a68}.token.important,.token.regex,.token.variable{color:#e90}.token.bold,.token.important{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="https://k6.io/favicon.png" sizes="32x32">
+    <title>jslib.k6.io - JS std lib</title>
+    <style>code[class*=language-], pre[class*=language-] {
+        color: #000;
+        background: 0 0;
+        text-shadow: 0 1px #fff;
+        font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+        font-size: 1em;
+        text-align: left;
+        white-space: pre;
+        word-spacing: normal;
+        word-break: normal;
+        word-wrap: normal;
+        line-height: 1.5;
+        -moz-tab-size: 4;
+        -o-tab-size: 4;
+        tab-size: 4;
+        -webkit-hyphens: none;
+        -moz-hyphens: none;
+        -ms-hyphens: none;
+        hyphens: none
+    }
 
-pre.language-js {
-  background: #f7f7f7 !important;
-  margin-bottom: 30px;
-}
-.code.language-js {
-  font-size: 13px;
-}
+    code[class*=language-] ::-moz-selection, code[class*=language-]::-moz-selection, pre[class*=language-] ::-moz-selection, pre[class*=language-]::-moz-selection {
+        text-shadow: none;
+        background: #b3d4fc
+    }
 
-body {
-  margin: 0;
-  font-family: -apple-system,Whitney,BlinkMacSystemFont,segoe ui,Roboto,Helvetica,Arial,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol;
-  color: #444;
-}
+    code[class*=language-] ::selection, code[class*=language-]::selection, pre[class*=language-] ::selection, pre[class*=language-]::selection {
+        text-shadow: none;
+        background: #b3d4fc
+    }
 
-*, *::before, *::after {
-  box-sizing: border-box;
-}
+    @media print {
+        code[class*=language-], pre[class*=language-] {
+            text-shadow: none
+        }
+    }
 
-h1, h2, h3, p, ul {
-  margin-top: 0;
-}
+    pre[class*=language-] {
+        padding: 1em;
+        margin: .5em 0;
+        overflow: auto
+    }
 
-a {
-  color: #106ad5;
-}
+    :not(pre) > code[class*=language-], pre[class*=language-] {
+        background: #f5f2f0
+    }
 
-h2 {
-  font-weight: 500;
-  color: #444;
-}
+    :not(pre) > code[class*=language-] {
+        padding: .1em;
+        border-radius: .3em;
+        white-space: normal
+    }
 
-a:not(:hover) {
-  text-decoration: none;
-}
+    .token.cdata, .token.comment, .token.doctype, .token.prolog {
+        color: #708090
+    }
 
-.text-blue {
-  color: #218db3;
-}
+    .token.punctuation {
+        color: #999
+    }
 
-.text-yellow {
-  color: #f0d91e;
-}
+    .namespace {
+        opacity: .7
+    }
 
-.page {
-  margin: 0 auto 50px;
-  max-width: 960px;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 50px;
-}
+    .token.boolean, .token.constant, .token.deleted, .token.number, .token.property, .token.symbol, .token.tag {
+        color: #905
+    }
 
-.page-section {
-  padding: 20px 0;
-}
+    .token.attr-name, .token.builtin, .token.char, .token.inserted, .token.selector, .token.string {
+        color: #690
+    }
 
-.title {
-  font-size: 60px;
-  margin-top: 0;
-  margin-bottom: 10px;
-}
+    .language-css .token.string, .style .token.string, .token.entity, .token.operator, .token.url {
+        color: #9a6e3a;
+        background: hsla(0, 0%, 100%, .5)
+    }
 
-.description {
-  color: #444;
-  font-size: 18px;
-  margin-top: 0;
-  margin-bottom: 0;
-  font-weight: 300;
-}
+    .token.atrule, .token.attr-value, .token.keyword {
+        color: #07a
+    }
 
-.header {
-  position: relative;
-  margin-bottom: 40px;
-}
+    .token.class-name, .token.function {
+        color: #dd4a68
+    }
 
-.logo svg {
-  width: 170px;
-  height: auto;
-}
+    .token.important, .token.regex, .token.variable {
+        color: #e90
+    }
 
-.logo svg path {
-  fill: #4AAED0;
-}
+    .token.bold, .token.important {
+        font-weight: 700
+    }
 
-@media (min-width: 600px) {
-  .logo {
-    margin-right: 40px;
-  }
+    .token.italic {
+        font-style: italic
+    }
 
-  .header {
-    display: flex;
-    align-items: center;
-  }
-}
+    .token.entity {
+        cursor: help
+    }
 
-@media (max-width: 599px) {
-  .logo {
-    margin-bottom: 10px;
-  }
+    pre.language-js {
+        background: #f7f7f7 !important;
+        margin-bottom: 30px;
+    }
 
-  .logo svg {
-    width: 100px;
-  }
-}
+    .code.language-js {
+        font-size: 13px;
+    }
 
-.table {
-  border-collapse: collapse;
-}
+    body {
+        margin: 0;
+        font-family: -apple-system, Whitney, BlinkMacSystemFont, segoe ui, Roboto, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
+        color: #444;
+    }
 
-.table td {
-  border: 1px solid #e6e6e6;
-  padding: 10px;
-  min-width: 130px;
-}
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
 
-.list-unstyled {
-  list-style: none;
-  padding-left: 0;
-}
+    h1, h2, h3, p, ul {
+        margin-top: 0;
+    }
 
-.modules-list {
-  list-style: none;
-  padding-left: 0;
-  border-top: 1px solid #e6e6e6;
-  padding: 10px 0;
-  border-bottom: 1px solid #e6e6e6;
-}
+    a {
+        color: #106ad5;
+    }
 
-.modules-list li {
-  padding: 10px;
-  display: flex;
-}
+    h2 {
+        font-weight: 500;
+        color: #444;
+    }
 
-.modules-list li p {
-  margin-bottom: 0;
-  margin-right: 10px;
-  min-width: 120px;
-}
+    a:not(:hover) {
+        text-decoration: none;
+    }
+
+    .text-blue {
+        color: #218db3;
+    }
+
+    .text-yellow {
+        color: #f0d91e;
+    }
+
+    .page {
+        margin: 0 auto 50px;
+        max-width: 960px;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 50px;
+    }
+
+    .page-section {
+        padding: 20px 0;
+    }
+
+    .title {
+        font-size: 60px;
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+
+    .description {
+        color: #444;
+        font-size: 18px;
+        margin-top: 0;
+        margin-bottom: 0;
+        font-weight: 300;
+    }
+
+    .header {
+        position: relative;
+        margin-bottom: 40px;
+    }
+
+    .logo svg {
+        width: 170px;
+        height: auto;
+    }
+
+    .logo svg path {
+        fill: #4AAED0;
+    }
+
+    @media (min-width: 600px) {
+        .logo {
+            margin-right: 40px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    @media (max-width: 599px) {
+        .logo {
+            margin-bottom: 10px;
+        }
+
+        .logo svg {
+            width: 100px;
+        }
+    }
+
+    .table {
+        border-collapse: collapse;
+    }
+
+    .table td {
+        border: 1px solid #e6e6e6;
+        padding: 10px;
+        min-width: 130px;
+    }
+
+    .list-unstyled {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .modules-list {
+        list-style: none;
+        padding-left: 0;
+        border-top: 1px solid #e6e6e6;
+        padding: 10px 0;
+        border-bottom: 1px solid #e6e6e6;
+    }
+
+    .modules-list li {
+        padding: 10px;
+        display: flex;
+    }
+
+    .modules-list li p {
+        margin-bottom: 0;
+        margin-right: 10px;
+        min-width: 120px;
+    }
+
+    .header-icons {
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: flex;
+        justify-content: flex-end;
+        align-self: flex-start;
+        list-style: none;
+    }
+
+    .header-icons li a {
+        padding: 10px;
+        color: #4aaed0;
+        transition: 0.2s;
+        display: block;
+    }
+
+    .header-icons li a:hover {
+        color: #30829e;
+    }
+
+    .header-icons li a:active {
+        transform: scale(0.9);
+    }
+
+    table{
+        margin-bottom: 20px;
+        table-layout: fixed;
+        width: 800px;
+    }
+
+    thead tr th:first-child,
+    tbody tr td:first-child
+    {
+      width: 8em;
+      min-width: 8em;
+      max-width: 8em;
+      word-break: break-all;
+    }
+
+    thead tr th:nth-child(2),
+    tbody tr td:nth-child(2){
+      width: 12em;
+      min-width: 12em;
+      max-width: 12em;
+      word-break: break-all;
+
+    }
 
 
-.header-icons {
-  position: absolute;
-  top: 0;
-  right: 0;
-  display: flex;
-  justify-content: flex-end;
-  align-self: flex-start;
-  list-style: none;
-}
 
-.header-icons li a {
-  padding: 10px;
-  color: #4aaed0;
-  transition: 0.2s;
-  display: block;
-}
-
-.header-icons li a:hover {
-  color: #30829e;
-}
-
-.header-icons li a:active {
-  transform: scale(0.9);
-}</style>
-    </head>
-    <body>
-      <main class="page">
-        <header class="header">
-          <div class="logo">
+    h2{
+        margin-bottom: 10px;
+    }
+    </style>
+</head>
+<body>
+<main class="page">
+    <header class="header">
+        <div class="logo">
             <svg width="181px" height="170px" viewBox="0 0 181 170">
                 <g id="Page-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                     <g id="k6-logo-cyan" fill="#4AAED0">
-                        <path d="M162.9,153.5 C162.8,149 160.7,146.7 156.7,146.6 C152.7,146.7 150.6,149 150.6,153.5 L150.6,157.2 C150.7,161.8 152.7,164.1 156.7,164.1 C160.7,164.1 162.8,161.8 162.9,157.2 L162.9,153.5 Z" id="Path"></path>
-                        <path d="M168,135 L162.4,135 C161.4,132.5 159.5,131.3 156.7,131.2 C152.7,131.3 150.7,133.6 150.6,138.1 L150.6,142.3 C153.6,141.3 156.4,140.9 158.9,140.9 C161.8,140.9 164.2,141.9 166.2,143.9 C168.2,145.9 169.1,149.1 169.1,153.4 L169.1,157.5 C169,161.6 167.8,164.8 165.4,167.1 C164.3,168.1 163.1,168.9 161.8,169.5 L180.6,169.5 L168,135 Z" id="Path"></path>
-                        <polygon id="Path" points="122.6 160.9 122.6 169.5 135.4 169.5 127.5 155.2"></polygon>
-                        <path d="M144.3,157.6 L144.3,137.7 C144.3,133.5 145.6,130.3 148.2,128.1 C150.6,125.9 153.4,124.8 156.7,124.8 C159.7,124.8 162.3,125.7 164.6,127.4 C164.9,127.7 165.3,128 165.6,128.3 L119.2,0.5 L87.2,88.7 L67.4,55.2 L1.42108547e-14,169.5 L101,169.5 L116.3,169.5 L116.3,125.1 L122.5,125.1 L122.5,153.1 L122.6,153.1 L134.6,138.1 L142.1,138.1 L131.4,150.6 L143.2,169.5 L151.7,169.5 C150.4,168.9 149.2,168.2 148.1,167.1 C145.6,164.9 144.3,161.7 144.3,157.6 Z" id="Path"></path>
+                        <path d="M162.9,153.5 C162.8,149 160.7,146.7 156.7,146.6 C152.7,146.7 150.6,149 150.6,153.5 L150.6,157.2 C150.7,161.8 152.7,164.1 156.7,164.1 C160.7,164.1 162.8,161.8 162.9,157.2 L162.9,153.5 Z"
+                              id="Path"></path>
+                        <path d="M168,135 L162.4,135 C161.4,132.5 159.5,131.3 156.7,131.2 C152.7,131.3 150.7,133.6 150.6,138.1 L150.6,142.3 C153.6,141.3 156.4,140.9 158.9,140.9 C161.8,140.9 164.2,141.9 166.2,143.9 C168.2,145.9 169.1,149.1 169.1,153.4 L169.1,157.5 C169,161.6 167.8,164.8 165.4,167.1 C164.3,168.1 163.1,168.9 161.8,169.5 L180.6,169.5 L168,135 Z"
+                              id="Path"></path>
+                        <polygon id="Path"
+                                 points="122.6 160.9 122.6 169.5 135.4 169.5 127.5 155.2"></polygon>
+                        <path d="M144.3,157.6 L144.3,137.7 C144.3,133.5 145.6,130.3 148.2,128.1 C150.6,125.9 153.4,124.8 156.7,124.8 C159.7,124.8 162.3,125.7 164.6,127.4 C164.9,127.7 165.3,128 165.6,128.3 L119.2,0.5 L87.2,88.7 L67.4,55.2 L1.42108547e-14,169.5 L101,169.5 L116.3,169.5 L116.3,125.1 L122.5,125.1 L122.5,153.1 L122.6,153.1 L134.6,138.1 L142.1,138.1 L131.4,150.6 L143.2,169.5 L151.7,169.5 C150.4,168.9 149.2,168.2 148.1,167.1 C145.6,164.9 144.3,161.7 144.3,157.6 Z"
+                              id="Path"></path>
                     </g>
                 </g>
             </svg>
-          </div>
-          <div>
-            <h1 class="title">api.test.<span class="text-blue">k6</span>.io</h1>
-            <p class="description">Collection of APIs and examples demonstrating use of k6</p>
-          </div>
-          <ul class="header-icons">
+        </div>
+        <div>
+            <h1 class="title">test-api.<span class="text-blue">loadimpact</span>.com</h1>
+            <p class="description">Collection of APIs and examples demonstrating the power of k6</p>
+        </div>
+        <ul class="header-icons">
             <li>
-              <a href="https://github.com/loadimpact/k6">
-                <svg height="20" width="20" aria-hidden="true" focusable="false" viewBox="0 0 496 512">
-                  <path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path>
-                </svg>
-              </a>
+                <a href="https://github.com/loadimpact/k6">
+                    <svg height="20" width="20" aria-hidden="true" focusable="false"
+                         viewBox="0 0 496 512">
+                        <path fill="currentColor"
+                              d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path>
+                    </svg>
+                </a>
             </li>
             <li>
-              <a href="https://twitter.com/k6_io">
-                <svg height="20" width="20" aria-hidden="true" focusable="false" viewBox="0 0 512 512">
-                  <path fill="currentColor" d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"></path>
-                </svg>
-              </a>
+                <a href="https://twitter.com/k6_io">
+                    <svg height="20" width="20" aria-hidden="true" focusable="false"
+                         viewBox="0 0 512 512">
+                        <path fill="currentColor"
+                              d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"></path>
+                    </svg>
+                </a>
             </li>
-          </ul>
-        </header>
-        <section class="page-section">
-          <h2>Available APIs</h2>
-            <table>
-                <tbody>
-                <tr>
-                    <td><a href="/public/crocodiles/">/public/crocodiles/</a> </td>
-                    <td>Get some objects</td>
-                </tr>
-                </tbody>
-            </table>
-        </section>
+        </ul>
+    </header>
+    <section class="page-section">
+        <h2>Public APIs</h2>
+        <table>
+            <tbody>
+            <tr>
+                <td>GET</td>
+                <td><a href="/public/crocodiles/">/public/crocodiles/</a></td>
+                <td>Public endpoint. List all public crocodiles.</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td><a href="/public/crocodiles/1/">/public/crocodiles/{id}/</a></td>
+                <td>Public endpoint. Get a single public crocodile.</td>
+            </tr>
+            </tbody>
+        </table>
 
-        <section class="page-section">
-          <h2>Test different auth mechanisms</h2>
+        <h2>Registration and authentication</h2>
+        <table>
+            <tbody>
+            <tr>
+                <td>POST</td>
+                <td><a href="/user/register/">/user/register/</a></td>
+                <td>Public endpoint. Register a new user.</td>
+            </tr>
 
-            <p>
-                Some APIs require authentication.
-            </p>
+            <tr>
+                <td>POST</td>
+                <td><a href="/auth/cookie/login/">/auth/cookie/login/</a></td>
+                <td>Public endpoint. Cookie/Session based authentication login.</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td><a href="/auth/cookie/logout/">/auth/cookie/logout/</a></td>
+                <td>Private endpoint. Cookie/Session logout.</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td><a href="/auth/cookie/login/">/auth/basic/login/</a></td>
+                <td>Public endpoint. HTTP basic-auth login.</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td><a href="/auth/token/login/">/auth/basic/token/</a></td>
+                <td>Public endpoint. Bearer/JWT token authentication.</td>
+            </tr>
+            </tbody>
+        </table>
 
-            <table>
-                <tbody>
-                    <tr>
-                        <td>Username</td>
-                        <td>user</td>
-                    </tr>
-                    <tr>
-                        <td>Password</td>
-                        <td>test123!</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-      </main>
-    </body>
+        <h2>Private APIs </h2>
+        <table>
+            <tbody>
+            <tr>
+                <td>GET</td>
+                <td><a href="/my/crocodiles/">/my/crocodiles/</a></td>
+                <td>Private endpoint. List all your crocodiles</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td><a href="/my/crocodiles/{}/">/my/crocodiles/{id}/</a></td>
+                <td>Private endpoint. Get a single crocodile.</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td><a href="/my/crocodiles/">/my/crocodiles/</a></td>
+                <td>Private endpoint. Create a new crocodile (max 100).</td>
+            </tr>
+            <tr>
+                <td>PUT</td>
+                <td><a href="/my/crocodiles/{}/">/my/crocodiles/{id}/</a></td>
+                <td>Private endpoint. Update your crocodile.</td>
+            </tr>
+            <tr>
+                <td>PATCH</td>
+                <td><a href="/my/crocodiles/{}/">/my/crocodiles/{id}/</a></td>
+                <td>Private endpoint. Update selected fields on your crocodile.</td>
+            </tr>
+            <tr>
+                <td>DELETE</td>
+                <td><a href="/my/crocodiles/{}/">/my/crocodiles/{id}/</a></td>
+                <td>Private endpoint. Remove your crocodile.</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="page-section">
+        <h2>Test different auth mechanisms</h2>
+
+        <p>
+            Some APIs require authentication.
+        </p>
+
+        <table>
+            <tbody>
+            <tr>
+                <td>Username</td>
+                <td>user</td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td>test123!</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
 </html>
