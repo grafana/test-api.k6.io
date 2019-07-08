@@ -36,5 +36,5 @@ pip install --upgrade \
     --extra-index-url https://pypi.fury.io/nb4o5eUFa3gxr5AW9rVX/loadimpact/ \
     li_ecs_deploy
 
-# deploy -t $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM -e $AWS_ENV -r $AWS_REGION task
+deploy -t $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM -e $AWS_ENV -r $AWS_REGION task
 deploy -t $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM -e $AWS_ENV -r $AWS_REGION --force
