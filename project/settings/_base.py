@@ -86,8 +86,9 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(WORK_DIR, 'static_root')
 STATIC_RESOURCES = os.path.join(BASE_DIR, 'static_resources')
 
-STATIC_DIRS = (
-    STATIC_ROOT,
+print(STATIC_RESOURCES)
+
+STATICFILES_DIRS = (
     STATIC_RESOURCES,
 )
 
