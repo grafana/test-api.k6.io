@@ -8,7 +8,7 @@ production-like application examples we need.
 We have a fixture with initial data that populated the prod/dev database with some users and crocodiles.
 This generally is run automatically via docker-compose.
 
-```bash
+```sh
 cd test_api
 ./devops/loaddata.sh
 ```

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # - Check if in circleci
 # - set tag name

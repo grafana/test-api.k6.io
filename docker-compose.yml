@@ -8,7 +8,7 @@ services:
   test_api:
     image: test_api
     build: .
-    command: bash -c "python project/manage.py makemigrations && python project/manage.py migrate && ./devops/loaddata.sh && python project/manage.py runserver 0.0.0.0:8000"
+    command: sh -c "python project/manage.py makemigrations && python project/manage.py migrate && ./devops/loaddata.sh && python project/manage.py runserver 0.0.0.0:8000"
     container_name: test_api
     working_dir: /srv/test-api.loadimpact.com
     volumes:
