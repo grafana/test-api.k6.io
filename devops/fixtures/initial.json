@@ -41,7 +41,7 @@
     "fields": {
         "name": "Bert",
         "sex": "M",
-        "date_of_birth": "2017-06-27",
+        "date_of_birth": "2010-06-27",
         "owner": null
     }
 },
@@ -51,7 +51,7 @@
     "fields": {
         "name": "Ed",
         "sex": "M",
-        "date_of_birth": "2011-06-27",
+        "date_of_birth": "1995-02-27",
         "owner": null
     }
 },
@@ -61,7 +61,7 @@
     "fields": {
         "name": "Lyle the Crocodile",
         "sex": "M",
-        "date_of_birth": "2019-06-28",
+        "date_of_birth": "1985-03-03",
         "owner": null
     }
 },
@@ -71,7 +71,7 @@
     "fields": {
         "name": "Solomon",
         "sex": "M",
-        "date_of_birth": "2019-06-28",
+        "date_of_birth": "1993-12-25",
         "owner": null
     }
 },
@@ -81,7 +81,7 @@
     "fields": {
         "name": "The gharial",
         "sex": "F",
-        "date_of_birth": "2009-06-28",
+        "date_of_birth": "2004-06-28",
         "owner": null
     }
 },
@@ -91,7 +91,7 @@
     "fields": {
         "name": "Sang Buaya",
         "sex": "F",
-        "date_of_birth": "1019-06-28",
+        "date_of_birth": "2006-01-28",
         "owner": null
     }
 },
@@ -101,7 +101,7 @@
     "fields": {
         "name": "Sobek",
         "sex": "F",
-        "date_of_birth": "2014-06-28",
+        "date_of_birth": "1854-09-02",
         "owner": null
     }
 },
@@ -111,7 +111,7 @@
     "fields": {
         "name": "Curious George",
         "sex": "M",
-        "date_of_birth": "1982-03-03",
+        "date_of_birth": "1981-01-03",
         "owner": null
     }
 }
