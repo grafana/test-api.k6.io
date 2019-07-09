@@ -439,7 +439,6 @@
         <h2>Sample script</h2>
 
 <div class="syntax"><pre><span></span><span class="kr">import</span> <span class="nx">http</span> <span class="nx">from</span> <span class="s2">"k6/http"</span><span class="p">;</span>
-
 <span class="kr">import</span> <span class="p">{</span><span class="nx">check</span><span class="p">,</span> <span class="nx">group</span><span class="p">,</span> <span class="nx">sleep</span><span class="p">,</span> <span class="nx">fail</span><span class="p">}</span> <span class="nx">from</span> <span class="s2">"k6"</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span><span class="nx">Counter</span><span class="p">,</span> <span class="nx">Rate</span><span class="p">,</span> <span class="nx">Trend</span><span class="p">}</span> <span class="nx">from</span> <span class="s2">"k6/metrics"</span><span class="p">;</span>
 
@@ -449,11 +448,11 @@
   <span class="p">],</span>
   <span class="nx">thresholds</span><span class="o">:</span> <span class="p">{</span>
     <span class="s2">"http_req_duration"</span><span class="o">:</span> <span class="p">[</span><span class="s2">"p(95)&lt;500"</span><span class="p">],</span>
-    <span class="s2">"http_req_duration{staticAsset:yes}"</span><span class="o">:</span> <span class="p">[</span><span class="s2">"p(95)&lt;100"</span><span class="p">],</span>
+    <span class="s2">"http_req_duration{name:PublicCrocs}"</span><span class="o">:</span> <span class="p">[</span><span class="s2">"p(95)&lt;300"</span><span class="p">],</span>
+    <span class="s2">"http_req_duration{name:Create}"</span><span class="o">:</span> <span class="p">[</span><span class="s2">"p(95)&lt;500"</span><span class="p">],</span>
     <span class="s2">"check_failure_rate"</span><span class="o">:</span> <span class="p">[</span><span class="s2">"rate&lt;0.3"</span><span class="p">]</span>
   <span class="p">},</span>
 <span class="p">};</span>
-
 
 <span class="kd">function</span> <span class="nx">randomString</span><span class="p">(</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">let</span> <span class="nx">charset</span> <span class="o">=</span> <span class="s2">"abcdefghijklmnopqrstuvwxyz"</span><span class="p">;</span>
@@ -466,45 +465,36 @@
 <span class="kd">let</span> <span class="nx">PASSWORD</span> <span class="o">=</span> <span class="s2">"superCroc2019"</span><span class="p">;</span>
 <span class="kd">let</span> <span class="nx">BASE_URL</span> <span class="o">=</span> <span class="s1">'https://test-api.loadimpact.com'</span><span class="p">;</span>
 
-
 <span class="kr">export</span> <span class="kd">function</span> <span class="nx">setup</span><span class="p">()</span> <span class="p">{</span>
-  <span class="kd">let</span> <span class="nx">authToken</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+  <span class="c1">// register a new user and authenticate via a Bearer token.</span>
+  <span class="kd">let</span> <span class="nx">createResp</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/user/register/`</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">first_name</span><span class="o">:</span> <span class="s2">"Crocodile"</span><span class="p">,</span>
+    <span class="nx">last_name</span><span class="o">:</span> <span class="s2">"Owner"</span><span class="p">,</span>
+    <span class="nx">username</span><span class="o">:</span> <span class="nx">USERNAME</span><span class="p">,</span>
+    <span class="nx">password</span><span class="o">:</span> <span class="nx">PASSWORD</span><span class="p">,</span>
+  <span class="p">});</span>
 
-  <span class="nx">group</span><span class="p">(</span><span class="s2">"Register and authenticate"</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+  <span class="nx">check</span><span class="p">(</span><span class="nx">createResp</span><span class="p">,</span> <span class="p">{</span>
+    <span class="s2">"created user"</span><span class="o">:</span> <span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">201</span><span class="p">,</span>
+  <span class="p">});</span> <span class="c1">// || fail(`could not register. Error: ${createResp.body} `);</span>
 
-    <span class="c1">// register a new user</span>
-    <span class="kd">let</span> <span class="nx">createResp</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/user/register/`</span><span class="p">,</span> <span class="p">{</span>
-      <span class="nx">first_name</span><span class="o">:</span> <span class="s2">"Crocodile"</span><span class="p">,</span>
-      <span class="nx">last_name</span><span class="o">:</span> <span class="s2">"Owner"</span><span class="p">,</span>
-      <span class="nx">username</span><span class="o">:</span> <span class="nx">USERNAME</span><span class="p">,</span>
-      <span class="nx">password</span><span class="o">:</span> <span class="nx">PASSWORD</span><span class="p">,</span>
-    <span class="p">});</span>
+  <span class="kd">let</span> <span class="nx">loginRes</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/auth/token/login/`</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">username</span><span class="o">:</span> <span class="nx">USERNAME</span><span class="p">,</span> <span class="nx">password</span><span class="o">:</span> <span class="nx">PASSWORD</span>
+  <span class="p">});</span>
 
-    <span class="nx">check</span><span class="p">(</span><span class="nx">createResp</span><span class="p">,</span> <span class="p">{</span>
-      <span class="s2">"created user"</span><span class="o">:</span> <span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">201</span><span class="p">,</span>
-    <span class="p">})</span> <span class="o">||</span> <span class="nx">fail</span><span class="p">(</span><span class="sb">`could not register. Error: </span><span class="si">${</span><span class="nx">createResp</span><span class="p">.</span><span class="nx">body</span><span class="si">}</span><span class="sb"> `</span><span class="p">);</span>
+  <span class="kd">let</span> <span class="nx">authToken</span> <span class="o">=</span> <span class="nx">loginRes</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'access'</span><span class="p">);</span>
 
-    <span class="kd">let</span> <span class="nx">loginRes</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/auth/token/login/`</span><span class="p">,</span> <span class="p">{</span>
-      <span class="nx">username</span><span class="o">:</span> <span class="nx">USERNAME</span><span class="p">,</span> <span class="nx">password</span><span class="o">:</span> <span class="nx">PASSWORD</span>
-    <span class="p">});</span>
-
-    <span class="nx">authToken</span> <span class="o">=</span> <span class="nx">loginRes</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'access'</span><span class="p">);</span>
-
-    <span class="nx">check</span><span class="p">(</span><span class="nx">authToken</span><span class="p">,</span> <span class="p">{</span>
-      <span class="s2">"logged in successfully"</span><span class="o">:</span> <span class="p">(</span><span class="nx">authToken</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">authToken</span> <span class="o">!==</span> <span class="s1">''</span><span class="p">,</span>
-    <span class="p">});</span>
-
+  <span class="nx">check</span><span class="p">(</span><span class="nx">authToken</span><span class="p">,</span> <span class="p">{</span>
+    <span class="s2">"logged in successfully"</span><span class="o">:</span> <span class="p">(</span><span class="nx">authToken</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">authToken</span> <span class="o">!==</span> <span class="s1">''</span><span class="p">,</span>
   <span class="p">});</span>
 
   <span class="k">return</span> <span class="nx">authToken</span><span class="p">;</span>
 <span class="p">}</span>
 
-
 <span class="kr">export</span> <span class="k">default</span> <span class="p">(</span><span class="nx">authToken</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 
   <span class="nx">group</span><span class="p">(</span><span class="s2">"Public endpoints"</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
     <span class="c1">// call some public endpoints in a batch</span>
-
     <span class="kd">let</span> <span class="nx">responses</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">batch</span><span class="p">([</span>
       <span class="p">[</span><span class="s2">"GET"</span><span class="p">,</span> <span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/public/crocodiles/1/`</span><span class="p">,</span> <span class="p">{},</span> <span class="p">{</span><span class="nx">tags</span><span class="o">:</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">"PublicCrocs"</span><span class="p">}}],</span>
       <span class="p">[</span><span class="s2">"GET"</span><span class="p">,</span> <span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/public/crocodiles/2/`</span><span class="p">,</span> <span class="p">{},</span> <span class="p">{</span><span class="nx">tags</span><span class="o">:</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">"PublicCrocs"</span><span class="p">}}],</span>
@@ -512,14 +502,10 @@
       <span class="p">[</span><span class="s2">"GET"</span><span class="p">,</span> <span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/public/crocodiles/4/`</span><span class="p">,</span> <span class="p">{},</span> <span class="p">{</span><span class="nx">tags</span><span class="o">:</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">"PublicCrocs"</span><span class="p">}}],</span>
     <span class="p">]);</span>
 
-    <span class="c1">// check that all the crocodiles we fetched have names</span>
+    <span class="c1">// check that all the public crocodiles are older than 5</span>
     <span class="nb">Object</span><span class="p">.</span><span class="nx">values</span><span class="p">(</span><span class="nx">responses</span><span class="p">).</span><span class="nx">map</span><span class="p">(</span><span class="nx">resp</span> <span class="p">=&gt;</span> <span class="nx">check</span><span class="p">(</span><span class="nx">resp</span><span class="p">,</span> <span class="p">{</span>
-      <span class="s2">"crocs have names"</span><span class="o">:</span> <span class="p">(</span><span class="nx">resp</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'name'</span><span class="p">)</span> <span class="o">!==</span> <span class="s1">''</span>
+      <span class="s2">"Croc is at least 5 years old"</span><span class="o">:</span> <span class="p">(</span><span class="nx">resp</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'age'</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5</span>
     <span class="p">}))</span>
-  <span class="p">});</span>
-
-  <span class="nx">check</span><span class="p">(</span><span class="nx">authToken</span><span class="p">,</span> <span class="p">{</span>
-    <span class="s2">"logged in successfully"</span><span class="o">:</span> <span class="p">(</span><span class="nx">authToken</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">authToken</span> <span class="o">!==</span> <span class="s1">''</span><span class="p">,</span>
   <span class="p">});</span>
 
   <span class="kd">let</span> <span class="nx">requestConfig</span> <span class="o">=</span> <span class="p">{</span>
@@ -538,7 +524,8 @@
       <span class="nx">sex</span><span class="o">:</span> <span class="s2">"M"</span><span class="p">,</span>
       <span class="nx">date_of_birth</span><span class="o">:</span> <span class="s2">"2001-01-01"</span><span class="p">,</span>
     <span class="p">};</span>
-    <span class="kd">let</span> <span class="nx">createR</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/my/crocodiles/`</span><span class="p">,</span> <span class="nx">newCroc</span><span class="p">,</span> <span class="nx">requestConfig</span><span class="p">);</span>
+    <span class="kd">let</span> <span class="nx">createR</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/my/crocodiles/`</span><span class="p">,</span> <span class="nx">newCroc</span><span class="p">,</span>
+      <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">requestConfig</span><span class="p">,</span> <span class="p">{</span><span class="nx">tags</span><span class="o">:</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">"Create"</span><span class="p">}}));</span>
 
     <span class="nx">check</span><span class="p">(</span><span class="nx">createR</span><span class="p">,</span> <span class="p">{</span>
       <span class="s2">"croc created"</span><span class="o">:</span> <span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">201</span><span class="p">,</span>
@@ -546,15 +533,18 @@
 
     <span class="c1">// console.log(createR.body);</span>
 
-    <span class="kd">let</span> <span class="nx">putR</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">patch</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/my/crocodiles/</span><span class="si">${</span><span class="nx">createR</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'id'</span><span class="p">)</span><span class="si">}</span><span class="sb">/`</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">"new name"</span><span class="p">},</span> <span class="nx">requestConfig</span><span class="p">);</span>
+    <span class="kd">let</span> <span class="nx">patchR</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">patch</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/my/crocodiles/</span><span class="si">${</span><span class="nx">createR</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'id'</span><span class="p">)</span><span class="si">}</span><span class="sb">/`</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">"New name"</span><span class="p">},</span>
+      <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">requestConfig</span><span class="p">,</span> <span class="p">{</span><span class="nx">tags</span><span class="o">:</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">"Update"</span><span class="p">}}));</span>
 
-    <span class="nx">check</span><span class="p">(</span><span class="nx">putR</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">check</span><span class="p">(</span><span class="nx">patchR</span><span class="p">,</span> <span class="p">{</span>
       <span class="s2">"resp correct"</span><span class="o">:</span> <span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">200</span><span class="p">,</span>
-      <span class="s2">"croc updated"</span><span class="o">:</span> <span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'name'</span><span class="p">)</span> <span class="o">===</span> <span class="s2">"new name"</span><span class="p">,</span>
+      <span class="s2">"croc updated"</span><span class="o">:</span> <span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'name'</span><span class="p">)</span> <span class="o">===</span> <span class="s2">"New name"</span><span class="p">,</span>
     <span class="p">})</span> <span class="o">||</span> <span class="nx">fail</span><span class="p">(</span><span class="sb">`Unable to update the croc </span><span class="si">${</span><span class="nx">createR</span><span class="p">.</span><span class="nx">status</span><span class="si">}</span><span class="sb"> </span><span class="si">${</span><span class="nx">createR</span><span class="p">.</span><span class="nx">body</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
 
-    <span class="kd">let</span> <span class="nx">deleteR</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">del</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/my/crocodiles/</span><span class="si">${</span><span class="nx">createR</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'id'</span><span class="p">)</span><span class="si">}</span><span class="sb">/`</span><span class="p">,</span> <span class="p">{},</span> <span class="nx">requestConfig</span><span class="p">);</span>
-    <span class="kd">let</span> <span class="nx">getR</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/my/crocodiles/</span><span class="si">${</span><span class="nx">createR</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'id'</span><span class="p">)</span><span class="si">}</span><span class="sb">/`</span><span class="p">,</span> <span class="nx">requestConfig</span><span class="p">);</span>
+    <span class="kd">let</span> <span class="nx">deleteR</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">del</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/my/crocodiles/</span><span class="si">${</span><span class="nx">createR</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'id'</span><span class="p">)</span><span class="si">}</span><span class="sb">/`</span><span class="p">,</span> <span class="p">{},</span>
+      <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">requestConfig</span><span class="p">,</span> <span class="p">{</span><span class="nx">tags</span><span class="o">:</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">"Delete"</span><span class="p">}}));</span>
+    <span class="kd">let</span> <span class="nx">getR</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/my/crocodiles/</span><span class="si">${</span><span class="nx">createR</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'id'</span><span class="p">)</span><span class="si">}</span><span class="sb">/`</span><span class="p">,</span>
+      <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">requestConfig</span><span class="p">,</span> <span class="p">{</span><span class="nx">tags</span><span class="o">:</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">"RetrieveDeleted"</span><span class="p">}}));</span>
 
     <span class="nx">check</span><span class="p">(</span><span class="nx">deleteR</span><span class="p">,</span> <span class="p">{</span>
       <span class="s2">"crocDeleted"</span><span class="o">:</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="nx">deleteR</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">204</span><span class="p">,</span>
@@ -566,7 +556,6 @@
   <span class="nx">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
-
     </section>
 </main>
 </body>
