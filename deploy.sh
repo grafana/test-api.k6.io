@@ -37,4 +37,5 @@ pip install --upgrade \
     li_ecs_deploy
 
 deploy -t $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM -e $AWS_ENV -r $AWS_REGION task
+deploy -f ecs_deploy_db.yml -t $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM -e $AWS_ENV -r $AWS_REGION task
 deploy -t $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM -e $AWS_ENV -r $AWS_REGION --force

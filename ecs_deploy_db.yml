@@ -10,7 +10,4 @@ default_tags:
 
 task:
   command:
-    - python
-    - project/manage.py
-    - migrate
-    - --noinput
+    - ./devops/loaddata.sh
