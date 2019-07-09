@@ -142,27 +142,27 @@
         <h2>Sample script</h2>
 
         <pre>
-<code class="code language-js">import http from "k6/http";
-import {check, group, sleep, fail} from "k6";
-import {Counter, Rate, Trend} from "k6/metrics";
+<code class="code language-js">
+import http from "k6/http";
+import { check, group, sleep, fail } from "k6";
 
 export let options = {
-    stages: [
+  stages: [
     {target: 50, duration: "180s"},
-    ],
-    thresholds: {
+  ],
+  thresholds: {
     "http_req_duration": ["p(95)<500"],
     "http_req_duration{name:PublicCrocs}": ["p(95)<300"],
     "http_req_duration{name:Create}": ["p(95)<500"],
     "check_failure_rate": ["rate<0.3"]
-    },
+  },
 };
 
 function randomString(length) {
-    let charset = "abcdefghijklmnopqrstuvwxyz";
-    let res = '';
-    while (length--) res += charset[Math.random() * charset.length | 0];
-    return res;
+  let charset = "abcdefghijklmnopqrstuvwxyz";
+  let res = '';
+  while (length--) res += charset[Math.random() * charset.length | 0];
+  return res;
 }
 
 let USERNAME = 'YOUR_EMAIL3@example.com';  // `${randomString(10)}@example.com`;
@@ -170,95 +170,107 @@ let PASSWORD = "superCroc2019";
 let BASE_URL = 'https://test-api.loadimpact.com';
 
 export function setup() {
-    // register a new user and authenticate via a Bearer token.
-    let createResp = http.post(`${BASE_URL}/user/register/`, {
+  // register a new user and authenticate via a Bearer token.
+  let createResp = http.post(`${BASE_URL}/user/register/`, {
     first_name: "Crocodile",
     last_name: "Owner",
     username: USERNAME,
     password: PASSWORD,
-    });
+  });
 
-    check(createResp, {
+  check(createResp, {
     "created user": (r) => r.status === 201,
-    }); // || fail(`could not register. Error: ${createResp.body} `);
+  }); // || fail(`could not register. Error: ${createResp.body} `);
 
-    let loginRes = http.post(`${BASE_URL}/auth/token/login/`, {
+  let loginRes = http.post(`${BASE_URL}/auth/token/login/`, {
     username: USERNAME, password: PASSWORD
-    });
+  });
 
-    let authToken = loginRes.json('access');
+  let authToken = loginRes.json('access');
 
-    check(authToken, {
+  check(authToken, {
     "logged in successfully": (authToken) => authToken !== '',
-    });
+  });
 
-    return authToken;
+  return authToken;
 }
 
-export default (authToken) => {
 
-    group("Public endpoints", () => {
+export default (authToken) => {
+  const requestConfigWithTag = tag => ({
+    headers: {
+      Authorization: `Bearer ${authToken}`
+    },
+    tags: Object.assign({}, {
+      name: "PrivateCrocs"
+    }, tag)
+  });
+
+  group("Public endpoints", () => {
     // call some public endpoints in a batch
     let responses = http.batch([
-        ["GET", `${BASE_URL}/public/crocodiles/1/`, {}, {tags: {name: "PublicCrocs"}}],
-        ["GET", `${BASE_URL}/public/crocodiles/2/`, {}, {tags: {name: "PublicCrocs"}}],
-        ["GET", `${BASE_URL}/public/crocodiles/3/`, {}, {tags: {name: "PublicCrocs"}}],
-        ["GET", `${BASE_URL}/public/crocodiles/4/`, {}, {tags: {name: "PublicCrocs"}}],
+      ["GET", `${BASE_URL}/public/crocodiles/1/`, {}, {tags: {name: "PublicCrocs"}}],
+      ["GET", `${BASE_URL}/public/crocodiles/2/`, {}, {tags: {name: "PublicCrocs"}}],
+      ["GET", `${BASE_URL}/public/crocodiles/3/`, {}, {tags: {name: "PublicCrocs"}}],
+      ["GET", `${BASE_URL}/public/crocodiles/4/`, {}, {tags: {name: "PublicCrocs"}}],
     ]);
 
+    const ages = Object.values(responses).map(res => res.json('age'));
+
     // check that all the public crocodiles are older than 5
-    Object.values(responses).map(resp => check(resp, {
-        "Croc is at least 5 years old": (resp) => resp.json('age') > 5
-    }))
+    check(ages, {
+      'Crocs are older than 5 years of age': Math.min(...ages) > 5
     });
+  });
 
-    let requestConfig = {
-    headers: {
-        Authorization: `Bearer ${authToken}`
-    },
-    tags: {
-        name: "PrivateCrocs"
-    }
-    };
 
-    group("Create and modify crocs", () => {
+  group("Create and modify crocs", () => {
+    const URL = `${BASE_URL}/my/crocodiles/`;
 
-    let newCroc = {
+    const createRequest = http.post(URL,
+      {
         name: `Name ${randomString(10)}`,
         sex: "M",
         date_of_birth: "2001-01-01",
-    };
-    let createR = http.post(`${BASE_URL}/my/crocodiles/`, newCroc,
-        Object.assign(requestConfig, {tags: {name: "Create"}}));
+      },
+      requestConfigWithTag({ name: "Create" })
+    );
+    const crocId = createRequest.json('id');
 
-    check(createR, {
-        "croc created": (r) => r.status === 201,
-    }) || fail(`Unable to create croc ${createR.status} ${createR.body}`);
+    check(createRequest, { "croc created": r => r.status === 201 }) ||
+      fail(`Unable to create croc ${createRequest.status} ${createRequest.body}`);
 
-    // console.log(createR.body);
+    let patchRequest = http.patch(`${URL}/${crocId}/`,
+      { name: "New name" },
+      requestConfigWithTag({ name: "Update" })
+    );
 
-    let patchR = http.patch(`${BASE_URL}/my/crocodiles/${createR.json('id')}/`, {name: "New name"},
-        Object.assign(requestConfig, {tags: {name: "Update"}}));
+    check(patchRequest, {
+      "resp correct": (r) => r.status === 200,
+      "croc updated": (r) => r.json('name') === "New name",
+    }) || fail(`Unable to update the croc ${patchRequest.status} ${patchRequest.body}`);
 
-    check(patchR, {
-        "resp correct": (r) => r.status === 200,
-        "croc updated": (r) => r.json('name') === "New name",
-    }) || fail(`Unable to update the croc ${createR.status} ${createR.body}`);
+    let deleteRequest = http.del(
+      `${URL}/${crocId}/`,
+      {},
+      requestConfigWithTag({ name: "Delete" })
+    );
 
-    let deleteR = http.del(`${BASE_URL}/my/crocodiles/${createR.json('id')}/`, {},
-        Object.assign(requestConfig, {tags: {name: "Delete"}}));
-    let getR = http.get(`${BASE_URL}/my/crocodiles/${createR.json('id')}/`,
-        Object.assign(requestConfig, {tags: {name: "RetrieveDeleted"}}));
+    let getRequest = http.get(
+      `${URL}/${crocId}/`,
+      requestConfigWithTag({ name: "RetrieveDeleted" })
+    );
 
-    check(deleteR, {
-        "crocDeleted": () => deleteR.status === 204,
-        "crocNotFound": () => getR.status === 404,
+    check(deleteRequest, {
+      "crocDeleted": () => deleteRequest.status === 204,
+      "crocNotFound": () => getRequest.status === 404,
     }) || fail(`Croc was not deleted properly`);
 
-    });
+  });
 
-    sleep(1);
-}</code></pre>
+  sleep(1);
+}
+</code></pre>
     </section>
 </main>
 <script src="/static/js/prisms.js"></script>
