@@ -5,305 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" href="/static/favicon.ico" sizes="32x32">
-    <link rel="stylesheet" href="/static/css/pygments.css" type="text/css">
-    <title>APIs demonstrating the power of k6<</title>
-    <style>code[class*=language-], pre[class*=language-] {
-        color: #000;
-        background: 0 0;
-        text-shadow: 0 1px #fff;
-        font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-        font-size: 1em;
-        text-align: left;
-        white-space: pre;
-        word-spacing: normal;
-        word-break: normal;
-        word-wrap: normal;
-        line-height: 1.5;
-        -moz-tab-size: 4;
-        -o-tab-size: 4;
-        tab-size: 4;
-        -webkit-hyphens: none;
-        -moz-hyphens: none;
-        -ms-hyphens: none;
-        hyphens: none
-    }
-
-    code[class*=language-] ::-moz-selection, code[class*=language-]::-moz-selection, pre[class*=language-] ::-moz-selection, pre[class*=language-]::-moz-selection {
-        text-shadow: none;
-        background: #b3d4fc
-    }
-
-    code[class*=language-] ::selection, code[class*=language-]::selection, pre[class*=language-] ::selection, pre[class*=language-]::selection {
-        text-shadow: none;
-        background: #b3d4fc
-    }
-
-    @media print {
-        code[class*=language-], pre[class*=language-] {
-            text-shadow: none
-        }
-    }
-
-    pre[class*=language-] {
-        padding: 1em;
-        margin: .5em 0;
-        overflow: auto
-    }
-
-    :not(pre) > code[class*=language-], pre[class*=language-] {
-        background: #f5f2f0
-    }
-
-    :not(pre) > code[class*=language-] {
-        padding: .1em;
-        border-radius: .3em;
-        white-space: normal
-    }
-
-    .token.cdata, .token.comment, .token.doctype, .token.prolog {
-        color: #708090
-    }
-
-    .token.punctuation {
-        color: #999
-    }
-
-    .namespace {
-        opacity: .7
-    }
-
-    .token.boolean, .token.constant, .token.deleted, .token.number, .token.property, .token.symbol, .token.tag {
-        color: #905
-    }
-
-    .token.attr-name, .token.builtin, .token.char, .token.inserted, .token.selector, .token.string {
-        color: #690
-    }
-
-    .language-css .token.string, .style .token.string, .token.entity, .token.operator, .token.url {
-        color: #9a6e3a;
-        background: hsla(0, 0%, 100%, .5)
-    }
-
-    .token.atrule, .token.attr-value, .token.keyword {
-        color: #07a
-    }
-
-    .token.class-name, .token.function {
-        color: #dd4a68
-    }
-
-    .token.important, .token.regex, .token.variable {
-        color: #e90
-    }
-
-    .token.bold, .token.important {
-        font-weight: 700
-    }
-
-    .token.italic {
-        font-style: italic
-    }
-
-    .token.entity {
-        cursor: help
-    }
-
-    pre.language-js {
-        background: #f7f7f7 !important;
-        margin-bottom: 30px;
-    }
-
-    .code.language-js {
-        font-size: 13px;
-    }
-
-    body {
-        margin: 0;
-        font-family: -apple-system, Whitney, BlinkMacSystemFont, segoe ui, Roboto, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
-        color: #444;
-    }
-
-    *, *::before, *::after {
-        box-sizing: border-box;
-    }
-
-    h1, h2, h3, p, ul {
-        margin-top: 0;
-    }
-
-    a {
-        color: #106ad5;
-    }
-
-    h2 {
-        font-weight: 500;
-        color: #444;
-    }
-
-    a:not(:hover) {
-        text-decoration: none;
-    }
-
-    .text-blue {
-        color: #218db3;
-    }
-
-    .text-yellow {
-        color: #f0d91e;
-    }
-
-    .page {
-        margin: 0 auto 50px;
-        max-width: 960px;
-        padding-left: 20px;
-        padding-right: 20px;
-        padding-top: 50px;
-    }
-
-    .page-section {
-        padding: 20px 0;
-    }
-
-    .title {
-        font-size: 60px;
-        margin-top: 0;
-        margin-bottom: 10px;
-    }
-
-    .description {
-        color: #444;
-        font-size: 18px;
-        margin-top: 0;
-        margin-bottom: 0;
-        font-weight: 300;
-    }
-
-    .header {
-        position: relative;
-        margin-bottom: 40px;
-    }
-
-    .logo svg {
-        width: 170px;
-        height: auto;
-    }
-
-    .logo svg path {
-        fill: #4AAED0;
-    }
-
-    @media (min-width: 600px) {
-        .logo {
-            margin-right: 40px;
-        }
-
-        .header {
-            display: flex;
-            align-items: center;
-        }
-    }
-
-    @media (max-width: 599px) {
-        .logo {
-            margin-bottom: 10px;
-        }
-
-        .logo svg {
-            width: 100px;
-        }
-    }
-
-    .table {
-        border-collapse: collapse;
-    }
-
-    .table td {
-        border: 1px solid #e6e6e6;
-        padding: 10px;
-        min-width: 130px;
-    }
-
-    .list-unstyled {
-        list-style: none;
-        padding-left: 0;
-    }
-
-    .modules-list {
-        list-style: none;
-        padding-left: 0;
-        border-top: 1px solid #e6e6e6;
-        padding: 10px 0;
-        border-bottom: 1px solid #e6e6e6;
-    }
-
-    .modules-list li {
-        padding: 10px;
-        display: flex;
-    }
-
-    .modules-list li p {
-        margin-bottom: 0;
-        margin-right: 10px;
-        min-width: 120px;
-    }
-
-    .header-icons {
-        position: absolute;
-        top: 0;
-        right: 0;
-        display: flex;
-        justify-content: flex-end;
-        align-self: flex-start;
-        list-style: none;
-    }
-
-    .header-icons li a {
-        padding: 10px;
-        color: #4aaed0;
-        transition: 0.2s;
-        display: block;
-    }
-
-    .header-icons li a:hover {
-        color: #30829e;
-    }
-
-    .header-icons li a:active {
-        transform: scale(0.9);
-    }
-
-    table{
-        margin-bottom: 20px;
-        table-layout: fixed;
-        width: 800px;
-    }
-
-    thead tr th:first-child,
-    tbody tr td:first-child
-    {
-      width: 8em;
-      min-width: 8em;
-      max-width: 8em;
-      word-break: break-all;
-    }
-
-    thead tr th:nth-child(2),
-    tbody tr td:nth-child(2){
-      width: 12em;
-      min-width: 12em;
-      max-width: 12em;
-      word-break: break-all;
-
-    }
-
-    h2 {
-        margin-bottom: 10px;
-    }
-        pre{
-            padding: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/css/site.css" type="text/css">
+    <title>APIs demonstrating the power of k6</title>
 </head>
 <body>
 <main class="page">
@@ -350,7 +53,7 @@
         </ul>
     </header>
     <section class="page-section">
-        <h2>Public APIs</h2>
+        <h2 class="heading-underlined">Public APIs</h2>
         <table>
             <tbody>
             <tr>
@@ -366,7 +69,7 @@
             </tbody>
         </table>
 
-        <h2>Registration and authentication</h2>
+        <h2 class="heading-underlined">Registration and authentication</h2>
         <table>
             <tbody>
             <tr>
@@ -398,7 +101,7 @@
             </tbody>
         </table>
 
-        <h2>Private APIs </h2>
+        <h2 class="heading-underlined">Private APIs </h2>
         <table>
             <tbody>
             <tr>
@@ -438,136 +141,126 @@
     <section class="page-section">
         <h2>Sample script</h2>
 
-<div class="syntax"><pre><span></span><span class="kr">import</span> <span class="nx">http</span> <span class="nx">from</span> <span class="s2">"k6/http"</span><span class="p">;</span>
+        <pre>
+<code class="code language-js">import http from "k6/http";
+import {check, group, sleep, fail} from "k6";
+import {Counter, Rate, Trend} from "k6/metrics";
 
-<span class="kr">import</span> <span class="p">{</span><span class="nx">check</span><span class="p">,</span> <span class="nx">group</span><span class="p">,</span> <span class="nx">sleep</span><span class="p">,</span> <span class="nx">fail</span><span class="p">}</span> <span class="nx">from</span> <span class="s2">"k6"</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span><span class="nx">Counter</span><span class="p">,</span> <span class="nx">Rate</span><span class="p">,</span> <span class="nx">Trend</span><span class="p">}</span> <span class="nx">from</span> <span class="s2">"k6/metrics"</span><span class="p">;</span>
+export let options = {
+    stages: [
+    {target: 50, duration: "180s"},
+    ],
+    thresholds: {
+    "http_req_duration": ["p(95)<500"],
+    "http_req_duration{name:PublicCrocs}": ["p(95)<300"],
+    "http_req_duration{name:Create}": ["p(95)<500"],
+    "check_failure_rate": ["rate<0.3"]
+    },
+};
 
-<span class="kr">export</span> <span class="kd">let</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="nx">stages</span><span class="o">:</span> <span class="p">[</span>
-    <span class="p">{</span><span class="nx">target</span><span class="o">:</span> <span class="mi">50</span><span class="p">,</span> <span class="nx">duration</span><span class="o">:</span> <span class="s2">"180s"</span><span class="p">},</span>
-  <span class="p">],</span>
-  <span class="nx">thresholds</span><span class="o">:</span> <span class="p">{</span>
-    <span class="s2">"http_req_duration"</span><span class="o">:</span> <span class="p">[</span><span class="s2">"p(95)&lt;500"</span><span class="p">],</span>
-    <span class="s2">"http_req_duration{staticAsset:yes}"</span><span class="o">:</span> <span class="p">[</span><span class="s2">"p(95)&lt;100"</span><span class="p">],</span>
-    <span class="s2">"check_failure_rate"</span><span class="o">:</span> <span class="p">[</span><span class="s2">"rate&lt;0.3"</span><span class="p">]</span>
-  <span class="p">},</span>
-<span class="p">};</span>
+function randomString(length) {
+    let charset = "abcdefghijklmnopqrstuvwxyz";
+    let res = '';
+    while (length--) res += charset[Math.random() * charset.length | 0];
+    return res;
+}
 
+let USERNAME = 'YOUR_EMAIL3@example.com';  // `${randomString(10)}@example.com`;
+let PASSWORD = "superCroc2019";
+let BASE_URL = 'https://test-api.loadimpact.com';
 
-<span class="kd">function</span> <span class="nx">randomString</span><span class="p">(</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">let</span> <span class="nx">charset</span> <span class="o">=</span> <span class="s2">"abcdefghijklmnopqrstuvwxyz"</span><span class="p">;</span>
-  <span class="kd">let</span> <span class="nx">res</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
-  <span class="k">while</span> <span class="p">(</span><span class="nx">length</span><span class="o">--</span><span class="p">)</span> <span class="nx">res</span> <span class="o">+=</span> <span class="nx">charset</span><span class="p">[</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="nx">charset</span><span class="p">.</span><span class="nx">length</span> <span class="o">|</span> <span class="mi">0</span><span class="p">];</span>
-  <span class="k">return</span> <span class="nx">res</span><span class="p">;</span>
-<span class="p">}</span>
+export function setup() {
+    // register a new user and authenticate via a Bearer token.
+    let createResp = http.post(`${BASE_URL}/user/register/`, {
+    first_name: "Crocodile",
+    last_name: "Owner",
+    username: USERNAME,
+    password: PASSWORD,
+    });
 
-<span class="kd">let</span> <span class="nx">USERNAME</span> <span class="o">=</span> <span class="s1">'YOUR_EMAIL3@example.com'</span><span class="p">;</span>  <span class="c1">// `${randomString(10)}@example.com`;</span>
-<span class="kd">let</span> <span class="nx">PASSWORD</span> <span class="o">=</span> <span class="s2">"superCroc2019"</span><span class="p">;</span>
-<span class="kd">let</span> <span class="nx">BASE_URL</span> <span class="o">=</span> <span class="s1">'https://test-api.loadimpact.com'</span><span class="p">;</span>
+    check(createResp, {
+    "created user": (r) => r.status === 201,
+    }); // || fail(`could not register. Error: ${createResp.body} `);
 
+    let loginRes = http.post(`${BASE_URL}/auth/token/login/`, {
+    username: USERNAME, password: PASSWORD
+    });
 
-<span class="kr">export</span> <span class="kd">function</span> <span class="nx">setup</span><span class="p">()</span> <span class="p">{</span>
-  <span class="kd">let</span> <span class="nx">authToken</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+    let authToken = loginRes.json('access');
 
-  <span class="nx">group</span><span class="p">(</span><span class="s2">"Register and authenticate"</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    check(authToken, {
+    "logged in successfully": (authToken) => authToken !== '',
+    });
 
-    <span class="c1">// register a new user</span>
-    <span class="kd">let</span> <span class="nx">createResp</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/user/register/`</span><span class="p">,</span> <span class="p">{</span>
-      <span class="nx">first_name</span><span class="o">:</span> <span class="s2">"Crocodile"</span><span class="p">,</span>
-      <span class="nx">last_name</span><span class="o">:</span> <span class="s2">"Owner"</span><span class="p">,</span>
-      <span class="nx">username</span><span class="o">:</span> <span class="nx">USERNAME</span><span class="p">,</span>
-      <span class="nx">password</span><span class="o">:</span> <span class="nx">PASSWORD</span><span class="p">,</span>
-    <span class="p">});</span>
+    return authToken;
+}
 
-    <span class="nx">check</span><span class="p">(</span><span class="nx">createResp</span><span class="p">,</span> <span class="p">{</span>
-      <span class="s2">"created user"</span><span class="o">:</span> <span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">201</span><span class="p">,</span>
-    <span class="p">})</span> <span class="o">||</span> <span class="nx">fail</span><span class="p">(</span><span class="sb">`could not register. Error: </span><span class="si">${</span><span class="nx">createResp</span><span class="p">.</span><span class="nx">body</span><span class="si">}</span><span class="sb"> `</span><span class="p">);</span>
+export default (authToken) => {
 
-    <span class="kd">let</span> <span class="nx">loginRes</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/auth/token/login/`</span><span class="p">,</span> <span class="p">{</span>
-      <span class="nx">username</span><span class="o">:</span> <span class="nx">USERNAME</span><span class="p">,</span> <span class="nx">password</span><span class="o">:</span> <span class="nx">PASSWORD</span>
-    <span class="p">});</span>
+    group("Public endpoints", () => {
+    // call some public endpoints in a batch
+    let responses = http.batch([
+        ["GET", `${BASE_URL}/public/crocodiles/1/`, {}, {tags: {name: "PublicCrocs"}}],
+        ["GET", `${BASE_URL}/public/crocodiles/2/`, {}, {tags: {name: "PublicCrocs"}}],
+        ["GET", `${BASE_URL}/public/crocodiles/3/`, {}, {tags: {name: "PublicCrocs"}}],
+        ["GET", `${BASE_URL}/public/crocodiles/4/`, {}, {tags: {name: "PublicCrocs"}}],
+    ]);
 
-    <span class="nx">authToken</span> <span class="o">=</span> <span class="nx">loginRes</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'access'</span><span class="p">);</span>
+    // check that all the public crocodiles are older than 5
+    Object.values(responses).map(resp => check(resp, {
+        "Croc is at least 5 years old": (resp) => resp.json('age') > 5
+    }))
+    });
 
-    <span class="nx">check</span><span class="p">(</span><span class="nx">authToken</span><span class="p">,</span> <span class="p">{</span>
-      <span class="s2">"logged in successfully"</span><span class="o">:</span> <span class="p">(</span><span class="nx">authToken</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">authToken</span> <span class="o">!==</span> <span class="s1">''</span><span class="p">,</span>
-    <span class="p">});</span>
+    let requestConfig = {
+    headers: {
+        Authorization: `Bearer ${authToken}`
+    },
+    tags: {
+        name: "PrivateCrocs"
+    }
+    };
 
-  <span class="p">});</span>
+    group("Create and modify crocs", () => {
 
-  <span class="k">return</span> <span class="nx">authToken</span><span class="p">;</span>
-<span class="p">}</span>
+    let newCroc = {
+        name: `Name ${randomString(10)}`,
+        sex: "M",
+        date_of_birth: "2001-01-01",
+    };
+    let createR = http.post(`${BASE_URL}/my/crocodiles/`, newCroc,
+        Object.assign(requestConfig, {tags: {name: "Create"}}));
 
+    check(createR, {
+        "croc created": (r) => r.status === 201,
+    }) || fail(`Unable to create croc ${createR.status} ${createR.body}`);
 
-<span class="kr">export</span> <span class="k">default</span> <span class="p">(</span><span class="nx">authToken</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    // console.log(createR.body);
 
-  <span class="nx">group</span><span class="p">(</span><span class="s2">"Public endpoints"</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
-    <span class="c1">// call some public endpoints in a batch</span>
+    let patchR = http.patch(`${BASE_URL}/my/crocodiles/${createR.json('id')}/`, {name: "New name"},
+        Object.assign(requestConfig, {tags: {name: "Update"}}));
 
-    <span class="kd">let</span> <span class="nx">responses</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">batch</span><span class="p">([</span>
-      <span class="p">[</span><span class="s2">"GET"</span><span class="p">,</span> <span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/public/crocodiles/1/`</span><span class="p">,</span> <span class="p">{},</span> <span class="p">{</span><span class="nx">tags</span><span class="o">:</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">"PublicCrocs"</span><span class="p">}}],</span>
-      <span class="p">[</span><span class="s2">"GET"</span><span class="p">,</span> <span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/public/crocodiles/2/`</span><span class="p">,</span> <span class="p">{},</span> <span class="p">{</span><span class="nx">tags</span><span class="o">:</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">"PublicCrocs"</span><span class="p">}}],</span>
-      <span class="p">[</span><span class="s2">"GET"</span><span class="p">,</span> <span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/public/crocodiles/3/`</span><span class="p">,</span> <span class="p">{},</span> <span class="p">{</span><span class="nx">tags</span><span class="o">:</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">"PublicCrocs"</span><span class="p">}}],</span>
-      <span class="p">[</span><span class="s2">"GET"</span><span class="p">,</span> <span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/public/crocodiles/4/`</span><span class="p">,</span> <span class="p">{},</span> <span class="p">{</span><span class="nx">tags</span><span class="o">:</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">"PublicCrocs"</span><span class="p">}}],</span>
-    <span class="p">]);</span>
+    check(patchR, {
+        "resp correct": (r) => r.status === 200,
+        "croc updated": (r) => r.json('name') === "New name",
+    }) || fail(`Unable to update the croc ${createR.status} ${createR.body}`);
 
-    <span class="c1">// check that all the crocodiles we fetched have names</span>
-    <span class="nb">Object</span><span class="p">.</span><span class="nx">values</span><span class="p">(</span><span class="nx">responses</span><span class="p">).</span><span class="nx">map</span><span class="p">(</span><span class="nx">resp</span> <span class="p">=&gt;</span> <span class="nx">check</span><span class="p">(</span><span class="nx">resp</span><span class="p">,</span> <span class="p">{</span>
-      <span class="s2">"crocs have names"</span><span class="o">:</span> <span class="p">(</span><span class="nx">resp</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'name'</span><span class="p">)</span> <span class="o">!==</span> <span class="s1">''</span>
-    <span class="p">}))</span>
-  <span class="p">});</span>
+    let deleteR = http.del(`${BASE_URL}/my/crocodiles/${createR.json('id')}/`, {},
+        Object.assign(requestConfig, {tags: {name: "Delete"}}));
+    let getR = http.get(`${BASE_URL}/my/crocodiles/${createR.json('id')}/`,
+        Object.assign(requestConfig, {tags: {name: "RetrieveDeleted"}}));
 
-  <span class="nx">check</span><span class="p">(</span><span class="nx">authToken</span><span class="p">,</span> <span class="p">{</span>
-    <span class="s2">"logged in successfully"</span><span class="o">:</span> <span class="p">(</span><span class="nx">authToken</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">authToken</span> <span class="o">!==</span> <span class="s1">''</span><span class="p">,</span>
-  <span class="p">});</span>
+    check(deleteR, {
+        "crocDeleted": () => deleteR.status === 204,
+        "crocNotFound": () => getR.status === 404,
+    }) || fail(`Croc was not deleted properly`);
 
-  <span class="kd">let</span> <span class="nx">requestConfig</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
-      <span class="nx">Authorization</span><span class="o">:</span> <span class="sb">`Bearer </span><span class="si">${</span><span class="nx">authToken</span><span class="si">}</span><span class="sb">`</span>
-    <span class="p">},</span>
-    <span class="nx">tags</span><span class="o">:</span> <span class="p">{</span>
-      <span class="nx">name</span><span class="o">:</span> <span class="s2">"PrivateCrocs"</span>
-    <span class="p">}</span>
-  <span class="p">};</span>
+    });
 
-  <span class="nx">group</span><span class="p">(</span><span class="s2">"Create and modify crocs"</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
-
-    <span class="kd">let</span> <span class="nx">newCroc</span> <span class="o">=</span> <span class="p">{</span>
-      <span class="nx">name</span><span class="o">:</span> <span class="sb">`Name </span><span class="si">${</span><span class="nx">randomString</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">,</span>
-      <span class="nx">sex</span><span class="o">:</span> <span class="s2">"M"</span><span class="p">,</span>
-      <span class="nx">date_of_birth</span><span class="o">:</span> <span class="s2">"2001-01-01"</span><span class="p">,</span>
-    <span class="p">};</span>
-    <span class="kd">let</span> <span class="nx">createR</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/my/crocodiles/`</span><span class="p">,</span> <span class="nx">newCroc</span><span class="p">,</span> <span class="nx">requestConfig</span><span class="p">);</span>
-
-    <span class="nx">check</span><span class="p">(</span><span class="nx">createR</span><span class="p">,</span> <span class="p">{</span>
-      <span class="s2">"croc created"</span><span class="o">:</span> <span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">201</span><span class="p">,</span>
-    <span class="p">})</span> <span class="o">||</span> <span class="nx">fail</span><span class="p">(</span><span class="sb">`Unable to create croc </span><span class="si">${</span><span class="nx">createR</span><span class="p">.</span><span class="nx">status</span><span class="si">}</span><span class="sb"> </span><span class="si">${</span><span class="nx">createR</span><span class="p">.</span><span class="nx">body</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
-
-    <span class="c1">// console.log(createR.body);</span>
-
-    <span class="kd">let</span> <span class="nx">putR</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">patch</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/my/crocodiles/</span><span class="si">${</span><span class="nx">createR</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'id'</span><span class="p">)</span><span class="si">}</span><span class="sb">/`</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">"new name"</span><span class="p">},</span> <span class="nx">requestConfig</span><span class="p">);</span>
-
-    <span class="nx">check</span><span class="p">(</span><span class="nx">putR</span><span class="p">,</span> <span class="p">{</span>
-      <span class="s2">"resp correct"</span><span class="o">:</span> <span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">200</span><span class="p">,</span>
-      <span class="s2">"croc updated"</span><span class="o">:</span> <span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'name'</span><span class="p">)</span> <span class="o">===</span> <span class="s2">"new name"</span><span class="p">,</span>
-    <span class="p">})</span> <span class="o">||</span> <span class="nx">fail</span><span class="p">(</span><span class="sb">`Unable to update the croc </span><span class="si">${</span><span class="nx">createR</span><span class="p">.</span><span class="nx">status</span><span class="si">}</span><span class="sb"> </span><span class="si">${</span><span class="nx">createR</span><span class="p">.</span><span class="nx">body</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
-
-    <span class="kd">let</span> <span class="nx">deleteR</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">del</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/my/crocodiles/</span><span class="si">${</span><span class="nx">createR</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'id'</span><span class="p">)</span><span class="si">}</span><span class="sb">/`</span><span class="p">,</span> <span class="p">{},</span> <span class="nx">requestConfig</span><span class="p">);</span>
-    <span class="kd">let</span> <span class="nx">getR</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">BASE_URL</span><span class="si">}</span><span class="sb">/my/crocodiles/</span><span class="si">${</span><span class="nx">createR</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="s1">'id'</span><span class="p">)</span><span class="si">}</span><span class="sb">/`</span><span class="p">,</span> <span class="nx">requestConfig</span><span class="p">);</span>
-
-    <span class="nx">check</span><span class="p">(</span><span class="nx">deleteR</span><span class="p">,</span> <span class="p">{</span>
-      <span class="s2">"crocDeleted"</span><span class="o">:</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="nx">deleteR</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">204</span><span class="p">,</span>
-      <span class="s2">"crocNotFound"</span><span class="o">:</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="nx">getR</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">404</span><span class="p">,</span>
-    <span class="p">})</span> <span class="o">||</span> <span class="nx">fail</span><span class="p">(</span><span class="sb">`Croc was not deleted properly`</span><span class="p">);</span>
-
-  <span class="p">});</span>
-
-  <span class="nx">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
-
+    sleep(1);
+}</code></pre>
     </section>
 </main>
+<script src="/static/js/prisms.js"></script>
 </body>
 </html>
