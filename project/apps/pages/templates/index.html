@@ -142,55 +142,50 @@
         <h2>Sample script</h2>
 
         <pre>
-<code class="code language-js">
-import http from "k6/http";
-import { check, group, sleep, fail } from "k6";
+<code class="code language-js">import http from 'k6/http';
+import {check, group, sleep, fail} from 'k6';
 
 export let options = {
   stages: [
-    {target: 50, duration: "180s"},
+    { target: 50, duration: '180s' },
   ],
   thresholds: {
-    "http_req_duration": ["p(95)<500"],
-    "http_req_duration{name:PublicCrocs}": ["p(95)<300"],
-    "http_req_duration{name:Create}": ["p(95)<500"],
-    "check_failure_rate": ["rate<0.3"]
+    'http_req_duration': ['p(95)<500'],
+    'http_req_duration{name:PublicCrocs}': ['p(95)<300'],
+    'http_req_duration{name:Create}': ['p(95)<500'],
+    'check_failure_rate': ['rate<0.3']
   },
 };
 
 function randomString(length) {
-  let charset = "abcdefghijklmnopqrstuvwxyz";
+  let charset = 'abcdefghijklmnopqrstuvwxyz';
   let res = '';
   while (length--) res += charset[Math.random() * charset.length | 0];
   return res;
 }
 
 let USERNAME = 'YOUR_EMAIL3@example.com';  // `${randomString(10)}@example.com`;
-let PASSWORD = "superCroc2019";
+let PASSWORD = 'superCroc2019';
 let BASE_URL = 'https://test-api.loadimpact.com';
 
 export function setup() {
   // register a new user and authenticate via a Bearer token.
-  let createResp = http.post(`${BASE_URL}/user/register/`, {
-    first_name: "Crocodile",
-    last_name: "Owner",
+  let res = http.post(`${BASE_URL}/user/register/`, {
+    first_name: 'Crocodile',
+    last_name: 'Owner',
     username: USERNAME,
     password: PASSWORD,
   });
 
-  check(createResp, {
-    "created user": (r) => r.status === 201,
-  }); // || fail(`could not register. Error: ${createResp.body} `);
+  check(res, { 'created user': (r) => r.status === 201 });
 
   let loginRes = http.post(`${BASE_URL}/auth/token/login/`, {
-    username: USERNAME, password: PASSWORD
+    username: USERNAME,
+    password: PASSWORD
   });
 
   let authToken = loginRes.json('access');
-
-  check(authToken, {
-    "logged in successfully": (authToken) => authToken !== '',
-  });
+  check(authToken, { 'logged in successfully': () => authToken !== '', });
 
   return authToken;
 }
@@ -202,17 +197,17 @@ export default (authToken) => {
       Authorization: `Bearer ${authToken}`
     },
     tags: Object.assign({}, {
-      name: "PrivateCrocs"
+      name: 'PrivateCrocs'
     }, tag)
   });
 
-  group("Public endpoints", () => {
+  group('Public endpoints', () => {
     // call some public endpoints in a batch
     let responses = http.batch([
-      ["GET", `${BASE_URL}/public/crocodiles/1/`, {}, {tags: {name: "PublicCrocs"}}],
-      ["GET", `${BASE_URL}/public/crocodiles/2/`, {}, {tags: {name: "PublicCrocs"}}],
-      ["GET", `${BASE_URL}/public/crocodiles/3/`, {}, {tags: {name: "PublicCrocs"}}],
-      ["GET", `${BASE_URL}/public/crocodiles/4/`, {}, {tags: {name: "PublicCrocs"}}],
+      ['GET', `${BASE_URL}/public/crocodiles/1/`, {}, {tags: {name: 'PublicCrocs'}}],
+      ['GET', `${BASE_URL}/public/crocodiles/2/`, {}, {tags: {name: 'PublicCrocs'}}],
+      ['GET', `${BASE_URL}/public/crocodiles/3/`, {}, {tags: {name: 'PublicCrocs'}}],
+      ['GET', `${BASE_URL}/public/crocodiles/4/`, {}, {tags: {name: 'PublicCrocs'}}],
     ]);
 
     const ages = Object.values(responses).map(res => res.json('age'));
@@ -223,49 +218,51 @@ export default (authToken) => {
     });
   });
 
+  group('Create and modify crocs', () => {
+    let URL = `${BASE_URL}/my/crocodiles/`;
 
-  group("Create and modify crocs", () => {
-    const URL = `${BASE_URL}/my/crocodiles/`;
-
-    const createRequest = http.post(URL,
-      {
+    group('Create crocs', () => {
+      const payload = {
         name: `Name ${randomString(10)}`,
-        sex: "M",
-        date_of_birth: "2001-01-01",
-      },
-      requestConfigWithTag({ name: "Create" })
-    );
-    const crocId = createRequest.json('id');
+        sex: 'M',
+        date_of_birth: '2001-01-01',
+      };
 
-    check(createRequest, { "croc created": r => r.status === 201 }) ||
-      fail(`Unable to create croc ${createRequest.status} ${createRequest.body}`);
+      const res = http.post(URL, payload, requestConfigWithTag({ name: 'Create' }));
 
-    let patchRequest = http.patch(`${URL}/${crocId}/`,
-      { name: "New name" },
-      requestConfigWithTag({ name: "Update" })
-    );
+      if (check(res, { 'croc created': (r) => r.status === 201 })) {
+        URL = `${URL}${res.json('id')}/`;
+      } else {
+        fail(`Unable to create croc ${res.status} ${res.body}`)
+      }
+    });
 
-    check(patchRequest, {
-      "resp correct": (r) => r.status === 200,
-      "croc updated": (r) => r.json('name') === "New name",
-    }) || fail(`Unable to update the croc ${patchRequest.status} ${patchRequest.body}`);
+    group('Update croc', () => {
+      const payload = { name: 'New name' };
+      const res = http.patch(URL, payload, requestConfigWithTag({ name: 'Update' }))
+      const isSuccessfulUpdate = check(res, {
+        'resp correct': () => res.status === 200,
+        'croc updated': () => res.json('name') === 'New name',
+      })
 
-    let deleteRequest = http.del(
-      `${URL}/${crocId}/`,
-      {},
-      requestConfigWithTag({ name: "Delete" })
-    );
+      if (!isSuccessfulUpdate) {
+        fail(`Unable to update the croc ${res.status} ${res.body}`)
+      }
+    })
 
-    let getRequest = http.get(
-      `${URL}/${crocId}/`,
-      requestConfigWithTag({ name: "RetrieveDeleted" })
-    );
+    group('Update croc', () => {
+      const res = http.del(URL, {}, requestConfigWithTag({ name: 'Delete' }))
+      const getRes = http.get(URL, requestConfigWithTag({ name: 'RetrieveDeleted' }))
 
-    check(deleteRequest, {
-      "crocDeleted": () => deleteRequest.status === 204,
-      "crocNotFound": () => getRequest.status === 404,
-    }) || fail(`Croc was not deleted properly`);
+      const isSuccessfulDelete = check(res, {
+        'crocDeleted': () => res.status === 204,
+        'crocNotFound': () => getRes.status === 404,
+      })
 
+      if (!isSuccessfulDelete) {
+        fail(`Croc was not deleted properly`)
+      }
+    })
   });
 
   sleep(1);
