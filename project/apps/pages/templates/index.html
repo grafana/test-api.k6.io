@@ -147,26 +147,26 @@ import {check, group, sleep, fail} from 'k6';
 
 export let options = {
   stages: [
-    { target: 50, duration: '180s' },
+    { target: 30, duration: '30s' },
+    { target: 30, duration: '2m' },
   ],
   thresholds: {
-    'http_req_duration': ['p(95)<500'],
-    'http_req_duration{name:PublicCrocs}': ['p(95)<300'],
-    'http_req_duration{name:Create}': ['p(95)<500'],
-    'check_failure_rate': ['rate<0.3']
+    'http_req_duration': ['p(95)<500', 'p(99)<1500'],
+    'http_req_duration{name:PublicCrocs}': ['avg<400'],
+    'http_req_duration{name:Create}': ['avg<600', 'max>1000'],
   },
 };
 
 function randomString(length) {
-  let charset = 'abcdefghijklmnopqrstuvwxyz';
+  const charset = 'abcdefghijklmnopqrstuvwxyz';
   let res = '';
   while (length--) res += charset[Math.random() * charset.length | 0];
   return res;
 }
 
-let USERNAME = 'YOUR_EMAIL3@example.com';  // `${randomString(10)}@example.com`;
-let PASSWORD = 'superCroc2019';
-let BASE_URL = 'https://test-api.loadimpact.com';
+const USERNAME = 'YOUR_EMAIL4@example.com';  // `${randomString(10)}@example.com`;
+const PASSWORD = 'superCroc2019';
+const BASE_URL = 'https://test-api.loadimpact.com';
 
 export function setup() {
   // register a new user and authenticate via a Bearer token.
@@ -204,10 +204,10 @@ export default (authToken) => {
   group('Public endpoints', () => {
     // call some public endpoints in a batch
     let responses = http.batch([
-      ['GET', `${BASE_URL}/public/crocodiles/1/`, {}, {tags: {name: 'PublicCrocs'}}],
-      ['GET', `${BASE_URL}/public/crocodiles/2/`, {}, {tags: {name: 'PublicCrocs'}}],
-      ['GET', `${BASE_URL}/public/crocodiles/3/`, {}, {tags: {name: 'PublicCrocs'}}],
-      ['GET', `${BASE_URL}/public/crocodiles/4/`, {}, {tags: {name: 'PublicCrocs'}}],
+      ['GET', `${BASE_URL}/public/crocodiles/1/`, null, {tags: {name: 'PublicCrocs'}}],
+      ['GET', `${BASE_URL}/public/crocodiles/2/`, null, {tags: {name: 'PublicCrocs'}}],
+      ['GET', `${BASE_URL}/public/crocodiles/3/`, null, {tags: {name: 'PublicCrocs'}}],
+      ['GET', `${BASE_URL}/public/crocodiles/4/`, null, {tags: {name: 'PublicCrocs'}}],
     ]);
 
     const ages = Object.values(responses).map(res => res.json('age'));
@@ -233,31 +233,31 @@ export default (authToken) => {
       if (check(res, { 'croc created': (r) => r.status === 201 })) {
         URL = `${URL}${res.json('id')}/`;
       } else {
-        fail(`Unable to create croc ${res.status} ${res.body}`)
+        fail(`Unable to create a Croc ${res.status} ${res.body}`)
       }
     });
 
     group('Update croc', () => {
       const payload = { name: 'New name' };
-      const res = http.patch(URL, payload, requestConfigWithTag({ name: 'Update' }))
+      const res = http.patch(URL, payload, requestConfigWithTag({ name: 'Update' }));
       const isSuccessfulUpdate = check(res, {
         'resp correct': () => res.status === 200,
         'croc updated': () => res.json('name') === 'New name',
-      })
+      });
 
       if (!isSuccessfulUpdate) {
         fail(`Unable to update the croc ${res.status} ${res.body}`)
       }
-    })
+    });
 
     group('Update croc', () => {
-      const res = http.del(URL, {}, requestConfigWithTag({ name: 'Delete' }))
-      const getRes = http.get(URL, requestConfigWithTag({ name: 'RetrieveDeleted' }))
+      const res = http.del(URL, null, requestConfigWithTag({ name: 'Delete' }));
+      const getRes = http.get(URL, requestConfigWithTag({ name: 'RetrieveDeleted' }));
 
       const isSuccessfulDelete = check(res, {
         'crocDeleted': () => res.status === 204,
         'crocNotFound': () => getRes.status === 404,
-      })
+      });
 
       if (!isSuccessfulDelete) {
         fail(`Croc was not deleted properly`)
