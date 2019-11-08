@@ -250,21 +250,17 @@
           return
         }
       });
-  
-      group('Delete croc', () => {
-        const delRes = http.del(URL, null, requestConfigWithTag({ name: 'Delete' }));
-        const getRes = http.get(URL, requestConfigWithTag({ name: 'RetrieveDeleted' }));
-  
-        const isSuccessfulDelete = check(null, {
-          'Croc was deleted correctly': () => delRes.status === 204,
-          'Deleted croc can\'t be retrieved': () => getRes.status === 404,
-        });
-  
-        if (!isSuccessfulDelete) {
-          console.log(`Croc was not deleted properly`);
-          return
-        }
+
+      const delRes = http.del(URL, null, requestConfigWithTag({ name: 'Delete' }));
+
+      const isSuccessfulDelete = check(null, {
+        'Croc was deleted correctly': () => delRes.status === 204,
       });
+
+      if (!isSuccessfulDelete) {
+        console.log(`Croc was not deleted properly`);
+        return
+      }
     });
   
     sleep(1);
