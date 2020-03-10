@@ -2,7 +2,6 @@ FROM python:3.7.3-alpine
 
 EXPOSE 80
 ENV PYTHONUNBUFFERED 1
-ENV DJANGO_SETTINGS_MODULE=settings.api.prod
 
 RUN addgroup -g 82 -S www-data && adduser -u 82 -D -S -G www-data www-data
 RUN mkdir -p /var/lib/uwsgi /var/log/uwsgi && chown www-data /var/lib/uwsgi /var/log/uwsgi

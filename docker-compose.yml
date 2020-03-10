@@ -16,4 +16,4 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DJANGO_SETTINGS_MODULE=settings.api.dev
+      - LOADIMPACT_ENVIRONMENT=dev

@@ -25,6 +25,11 @@ if [ "$CIRCLE_BRANCH" = "master" ]; then
     export AWS_REGION="us-east-1"
     export AWS_ACCESS_KEY_ID=$PRODUCTION_ACCESS_KEY_ID
     export AWS_SECRET_ACCESS_KEY=$PRODUCTION_SECRET_ACCESS_KEY
+elif [ $CIRCLE_BRANCH = "develop" ]; then
+    export AWS_ENV="staging"
+    export AWS_REGION="eu-west-1"
+    export AWS_ACCESS_KEY_ID=$STAGING_ACCESS_KEY_ID
+    export AWS_SECRET_ACCESS_KEY=$STAGING_SECRET_ACCESS_KEY
 fi
 
 if [ -z $AWS_ACCESS_KEY_ID ] || [ -z $AWS_SECRET_ACCESS_KEY ]; then

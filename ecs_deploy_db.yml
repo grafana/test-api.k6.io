@@ -3,10 +3,12 @@ task_family: test-api-loadimpact-com
 image: loadimpact/test-api.loadimpact.com
 
 cluster:
+  staging: demosites-cluster-staging
   production: demosites-cluster-production
 
 default_tags:
   production: latest
+  staging: staging
 
 task:
   command:
