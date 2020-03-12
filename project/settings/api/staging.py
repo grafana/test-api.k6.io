@@ -1,25 +1,23 @@
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
+from django_secrets import AwsSecrets
+
 from .._base import *
+
+secrets = AwsSecrets()
 
 DEBUG = False
 
+SECRET_KEY = secrets.get_secret('staging/test-api/django_secret_key', 'SECRET_KEY')
+
 sentry_sdk.init(
-    dsn="https://a8eb61375aaa4770a1d218fddfeeadc0@sentry.io/1497944",
+    dsn=secrets.get_secret('staging/test-api/sentry', 'dsn'),
     integrations=[DjangoIntegration()]
 )
 
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get("MYSQL_DATABASE", '==missing=='),
-        'PASSWORD': os.environ.get("MYSQL_PASSWORD", '==missing=='),
-        'USER': os.environ.get("MYSQL_USER", '==missing=='),
-        'HOST': os.environ.get("MYSQL_HOST", '==missing=='),
-        'PORT': os.environ.get("MYSQL_PORT", 3306),
-    }
+    'default': secrets.get_secret('staging/test-api/django-database')
 }
 
 ROOT_URLCONF = 'urls.staging'
