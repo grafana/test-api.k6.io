@@ -5,7 +5,8 @@ from django_secrets import AwsSecrets
 
 from .._base import *
 
-secrets = AwsSecrets(secrets_root='staging/test-api/')
+secrets = AwsSecrets(secrets_root='staging/test-api/',
+                     region_name='eu-west-1')
 
 DEBUG = False
 
