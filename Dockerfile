@@ -36,4 +36,7 @@ COPY . /srv/test-api.loadimpact.com/
 # Collect static files
 RUN python project/manage.py collectstatic --noinput -v1
 
+RUN echo 'export $(strings /proc/1/environ | grep AWS_CONTAINER_CREDENTIALS_RELATIVE_URI)' >> /root/.profile
+RUN echo 'export $(strings /proc/1/environ | grep AWS_CONTAINER_CREDENTIALS_RELATIVE_URI)' >> /home/www-data/.profile
+
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
