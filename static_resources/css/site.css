@@ -124,7 +124,7 @@ h1, h2, h3, p, ul {
 }
 
 a {
-  color: #106ad5;
+  color: rgb(125, 100, 255);
 }
 
 h2 {
@@ -137,7 +137,7 @@ a:not(:hover) {
 }
 
 .text-blue {
-  color: #218db3;
+  color: rgb(125, 100, 255);
 }
 
 .text-yellow {
@@ -186,9 +186,9 @@ a:not(:hover) {
   height: auto;
 }
 
-.logo svg path {
-  fill: #4AAED0;
-}
+/*.logo svg path {*/
+/*  fill: #4AAED0;*/
+/*}*/
 
 @media (min-width: 820px) {
   .logo {
@@ -257,13 +257,13 @@ a:not(:hover) {
 
 .header-icons li a {
   padding: 10px;
-  color: #4aaed0;
+  color: rgb(125, 100, 255);
   transition: 0.2s;
   display: block;
 }
 
 .header-icons li a:hover {
-  color: #30829e;
+  color: rgb(125, 100, 255);
 }
 
 .header-icons li a:active {

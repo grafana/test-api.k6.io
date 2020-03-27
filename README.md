@@ -1,8 +1,17 @@
-# test-api.loadimpact.com
+# test-api.k6.io
 
-This project includes all kinds of APIs, authentication mechanisms, endpoints and whatever 
-production-like application examples we need.
+This is a simple API project that is a good target for load testing. 
+It contains several authentication mechanisms, private and public endpoints, etc. 
 
+### development 
+
+```bash
+cd test-api.k6.io
+pyvenv3 .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+./project/manage.py runserver
+```
 
 ### Load initial data
 We have a fixture with initial data that populated the prod/dev database with some users and crocodiles.
@@ -12,16 +21,6 @@ This generally is run automatically via docker-compose.
 cd test_api
 ./devops/loaddata.sh
 ```
-
-### Admin access
-
-You can create/edit the existing objects using admin interface. We have a default admin provisioned by the data fixture.
-
-http://test-api.loadimpact.com/admin
-
-    username: admin
-    password: crocodil3
-
 
 ## Browseable API
 

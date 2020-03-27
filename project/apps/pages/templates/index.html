@@ -12,23 +12,13 @@
 <main class="page">
     <header class="header">
         <div class="logo">
-            <svg width="181px" height="170px" viewBox="0 0 181 170">
-                <g id="Page-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                    <g id="k6-logo-cyan" fill="#4AAED0">
-                        <path d="M162.9,153.5 C162.8,149 160.7,146.7 156.7,146.6 C152.7,146.7 150.6,149 150.6,153.5 L150.6,157.2 C150.7,161.8 152.7,164.1 156.7,164.1 C160.7,164.1 162.8,161.8 162.9,157.2 L162.9,153.5 Z"
-                              id="Path"></path>
-                        <path d="M168,135 L162.4,135 C161.4,132.5 159.5,131.3 156.7,131.2 C152.7,131.3 150.7,133.6 150.6,138.1 L150.6,142.3 C153.6,141.3 156.4,140.9 158.9,140.9 C161.8,140.9 164.2,141.9 166.2,143.9 C168.2,145.9 169.1,149.1 169.1,153.4 L169.1,157.5 C169,161.6 167.8,164.8 165.4,167.1 C164.3,168.1 163.1,168.9 161.8,169.5 L180.6,169.5 L168,135 Z"
-                              id="Path"></path>
-                        <polygon id="Path"
-                                 points="122.6 160.9 122.6 169.5 135.4 169.5 127.5 155.2"></polygon>
-                        <path d="M144.3,157.6 L144.3,137.7 C144.3,133.5 145.6,130.3 148.2,128.1 C150.6,125.9 153.4,124.8 156.7,124.8 C159.7,124.8 162.3,125.7 164.6,127.4 C164.9,127.7 165.3,128 165.6,128.3 L119.2,0.5 L87.2,88.7 L67.4,55.2 L1.42108547e-14,169.5 L101,169.5 L116.3,169.5 L116.3,125.1 L122.5,125.1 L122.5,153.1 L122.6,153.1 L134.6,138.1 L142.1,138.1 L131.4,150.6 L143.2,169.5 L151.7,169.5 C150.4,168.9 149.2,168.2 148.1,167.1 C145.6,164.9 144.3,161.7 144.3,157.6 Z"
-                              id="Path"></path>
-                    </g>
-                </g>
+            <svg xmlns="http://www.w3.org/2000/svg" width="220.227" height="213.73" viewBox="0 0 220.227 213.73">
+                <path d="M220.727,213.731H.5L73.815,57.346l44.163,32.466L175.581,0Zm-80.746-33.778h.471a21.028,21.028,0,0,0,14.619-5.876,19.166,19.166,0,0,0,6.284-14.454,17.546,17.546,0,0,0-6.057-13.873,18.426,18.426,0,0,0-12.568-5.412h-.361a6.567,6.567,0,0,0-1.83.251l11.626-17.282-9.262-6.465-4.383,6.465-11.2,17.109c-1.925,2.836-3.535,5.334-4.533,7.07a40.655,40.655,0,0,0-2.663,5.726,17.816,17.816,0,0,0-1.272,6.6,19.145,19.145,0,0,0,6.206,14.3,20.709,20.709,0,0,0,14.485,5.876Zm-49.237-18.6,12.836,18.154H117.3l-15.1-21.06,13.41-18.617-8.9-6.159-3.927,5.184-12.058,17V121.674l-12.019-9.8V179.5H90.727V161.336ZM140,168.618a8.837,8.837,0,1,1,0-17.675h.079a8.639,8.639,0,0,1,6.229,2.663,8.228,8.228,0,0,1,2.663,6.127A8.978,8.978,0,0,1,140,168.6Z"
+                      transform="translate(-0.5 -0.001)" fill="#7d64ff"/>
             </svg>
         </div>
         <div>
-            <h1 class="title">test-api.<span class="text-blue">loadimpact</span>.com</h1>
+            <h1 class="title">test-api.<span class="text-blue">k6</span>.io</h1>
             <p class="description">Collection of APIs and examples demonstrating the power of k6</p>
         </div>
         <ul class="header-icons">
@@ -95,7 +85,7 @@
             </tr>
             <tr>
                 <td>POST</td>
-                <td><a href="/auth/token/login/">/auth/basic/token/</a></td>
+                <td><a href="/auth/token/login/">/auth/token/login/</a></td>
                 <td>Public endpoint. Bearer/JWT token authentication.</td>
             </tr>
             </tbody>
@@ -142,9 +132,9 @@
         <h2>Sample script</h2>
 
         <pre>
-<code class="code language-js">import http from 'k6/http';
+<code class="code language-js">  import http from 'k6/http';
   import {check, group, sleep, fail} from 'k6';
-  
+
   export let options = {
    stages: [
      { target: 70, duration: '30s' },
@@ -155,18 +145,18 @@
       'http_req_duration{name:Create}': ['avg<600', 'max<1000'],
     },
   };
-  
+
   function randomString(length) {
     const charset = 'abcdefghijklmnopqrstuvwxyz';
     let res = '';
     while (length--) res += charset[Math.random() * charset.length | 0];
     return res;
   }
-  
+
   const USERNAME = `${randomString(10)}@example.com`;  // Set your own email or `${randomString(10)}@example.com`;
   const PASSWORD = 'superCroc2019';
   const BASE_URL = 'https://test-api.loadimpact.com';
-  
+
   export function setup() {
     // register a new user and authenticate via a Bearer token.
     let res = http.post(`${BASE_URL}/user/register/`, {
@@ -175,21 +165,21 @@
       username: USERNAME,
       password: PASSWORD,
     });
-  
+
     check(res, { 'created user': (r) => r.status === 201 });
-  
+
     let loginRes = http.post(`${BASE_URL}/auth/token/login/`, {
       username: USERNAME,
       password: PASSWORD
     });
-  
+
     let authToken = loginRes.json('access');
     check(authToken, { 'logged in successfully': () => authToken !== '', });
-  
+
     return authToken;
   }
-  
-  
+
+
   export default (authToken) => {
     const requestConfigWithTag = tag => ({
       headers: {
@@ -199,7 +189,7 @@
         name: 'PrivateCrocs'
       }, tag)
     });
-  
+
     group('Public endpoints', () => {
       // call some public endpoints in a batch
       let responses = http.batch([
@@ -208,27 +198,27 @@
         ['GET', `${BASE_URL}/public/crocodiles/3/`, null, {tags: {name: 'PublicCrocs'}}],
         ['GET', `${BASE_URL}/public/crocodiles/4/`, null, {tags: {name: 'PublicCrocs'}}],
       ]);
-  
+
       const ages = Object.values(responses).map(res => res.json('age'));
-  
+
       // Functional test: check that all the public crocodiles are older than 5
       check(ages, {
         'Crocs are older than 5 years of age': Math.min(...ages) > 5
       });
     });
-  
+
     group('Create and modify crocs', () => {
       let URL = `${BASE_URL}/my/crocodiles/`;
-  
+
       group('Create crocs', () => {
         const payload = {
           name: `Name ${randomString(10)}`,
           sex: 'M',
           date_of_birth: '2001-01-01',
         };
-  
+
         const res = http.post(URL, payload, requestConfigWithTag({ name: 'Create' }));
-  
+
         if (check(res, { 'Croc created correctly': (r) => r.status === 201 })) {
           URL = `${URL}${res.json('id')}/`;
         } else {
@@ -236,7 +226,7 @@
           return
         }
       });
-  
+
       group('Update croc', () => {
         const payload = { name: 'New name' };
         const res = http.patch(URL, payload, requestConfigWithTag({ name: 'Update' }));
@@ -244,7 +234,7 @@
           'Update worked': () => res.status === 200,
           'Updated name is correct': () => res.json('name') === 'New name',
         });
-  
+
         if (!isSuccessfulUpdate) {
           console.log(`Unable to update the croc ${res.status} ${res.body}`);
           return
@@ -262,9 +252,9 @@
         return
       }
     });
-  
+
     sleep(1);
-  }  
+  }
 </code></pre>
     </section>
 </main>
