@@ -1,4 +1,4 @@
-Django==2.2.2
+Django==2.2.10
 djangorestframework==3.9.4
 dateutils==0.6.6
 djangorestframework-simplejwt==4.3.0
