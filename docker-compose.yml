@@ -10,9 +10,9 @@ services:
     build: .
     command: sh -c "python project/manage.py makemigrations && python project/manage.py migrate && ./devops/loaddata.sh && python project/manage.py runserver 0.0.0.0:8000"
     container_name: test_api
-    working_dir: /srv/test-api.loadimpact.com
+    working_dir: /srv/test-api.k6.io
     volumes:
-      - .:/srv/test-api.loadimpact.com
+      - .:/srv/test-api.k6.io
     ports:
       - "8000:8000"
     environment:

@@ -26,5 +26,5 @@ cd test_api
 
 Nice feature of this project is that APIs are "browseable", and can be easily explored by developers via the web interface.
 
-Explore this by clicking on one of the endpoints, for example [/public/crocodiles/](http://test-api.loadimpact.com/public/crocodiles)
+Explore this by clicking on one of the endpoints, for example [/public/crocodiles/](http://test-api.k6.io/public/crocodiles)
 and login (top right corner) with one of the default users.

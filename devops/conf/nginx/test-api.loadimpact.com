@@ -8,7 +8,7 @@ server {
     client_max_body_size 10M;
 
     location /static {
-        alias /srv/test-api.loadimpact.com/workdir/static_root/;
+        alias /srv/test-api.k6.io/workdir/static_root/;
         access_log off;
     }
 
@@ -20,6 +20,6 @@ server {
         uwsgi_param   X-Forwarded-For      $proxy_add_x_forwarded_for;
         uwsgi_param   X-Forwarded-Proto    $http_x_forwarded_proto;
 
-        include /srv/test-api.loadimpact.com/devops/conf/uwsgi/uwsgi.params;
+        include /srv/test-api.k6.io/devops/conf/uwsgi/uwsgi.params;
     }
 }

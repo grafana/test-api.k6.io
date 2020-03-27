@@ -57,14 +57,14 @@ export default function() {
         // As mention above, this logic just forces a perf URL_ALERT
         // It also highlights the ability to programmatically do things right in your script
         if (__ENV.URL_ALERT) {
-            res = http.get("http://test.loadimpact.com/?ts=" + Math.round(getRandomArbitrary(1,2000)));
+            res = http.get("http://test.k6.io/?ts=" + Math.round(getRandomArbitrary(1,2000)));
         } else {
-            res = http.get("http://test.loadimpact.com/");
+            res = http.get("http://test.k6.io/");
         }
         let checkRes = check(res, {
             "status is 200": (r) => r.status === 200,
             "body is 1176 bytes": (r) => r.body.length === 1176,
-            "is welcome header present": (r) => r.body.indexOf("Welcome to the LoadImpact.com demo site!") !== -1
+            "is welcome header present": (r) => r.body.indexOf("Welcome to the k6.io demo site!") !== -1
         });
 
         // Record check failures
@@ -76,8 +76,8 @@ export default function() {
         // Load static assets
         group("Static assets", function() {
             let res = http.batch([
-                ["GET", "http://test.loadimpact.com/style.css", {}, { tags: { staticAsset: "yes" } }],
-                ["GET", "http://test.loadimpact.com/images/logo.png", {}, { tags: { staticAsset: "yes" } }]
+                ["GET", "http://test.k6.io/style.css", {}, { tags: { staticAsset: "yes" } }],
+                ["GET", "http://test.k6.io/images/logo.png", {}, { tags: { staticAsset: "yes" } }]
             ]);
             checkRes = check(res[0], {
                 "is status 200": (r) => r.status === 200
@@ -95,7 +95,7 @@ export default function() {
     });
 
     group("Login", function() {
-        let res = http.get("http://test.loadimpact.com/my_messages.php");
+        let res = http.get("http://test.k6.io/my_messages.php");
         let checkRes = check(res, {
             "is status 200": (r) => r.status === 200,
             "is unauthorized header present": (r) => r.body.indexOf("Unauthorized") !== -1
@@ -104,7 +104,7 @@ export default function() {
         // Record check failures
         checkFailureRate.add(!checkRes);
 
-        res = http.post("http://test.loadimpact.com/login.php", { login: 'admin', password: '123', redir: '1' });
+        res = http.post("http://test.k6.io/login.php", { login: 'admin', password: '123', redir: '1' });
         checkRes = check(res, {
             "is status 200": (r) => r.status === 200,
             "is welcome header present": (r) => r.body.indexOf("Welcome, admin!") !== -1

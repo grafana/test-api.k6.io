@@ -7,9 +7,9 @@ ENV DJANGO_SETTINGS_MODULE=settings.api.prod
 RUN addgroup -g 82 -S www-data && adduser -u 82 -D -S -G www-data www-data
 RUN mkdir -p /var/lib/uwsgi /var/log/uwsgi && chown www-data /var/lib/uwsgi /var/log/uwsgi
 
-COPY requirements.txt /srv/test-api.loadimpact.com/requirements.txt
+COPY requirements.txt /srv/test-api.k6.io/requirements.txt
 
-WORKDIR /srv/test-api.loadimpact.com/
+WORKDIR /srv/test-api.k6.io/
 
 RUN apk add --no-cache \
     nginx \
@@ -19,19 +19,19 @@ RUN apk add --no-cache \
     build-base \
     mariadb-connector-c-dev && \
     rm -r /usr/lib/python*/ensurepip && \
-    pip3 install -r /srv/test-api.loadimpact.com/requirements.txt && \
+    pip3 install -r /srv/test-api.k6.io/requirements.txt && \
     rm /etc/nginx/conf.d/default.conf && \
     rm -r /root/.cache
 
 # Copy the Nginx configs
 COPY devops/conf/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY devops/conf/nginx/test-api.loadimpact.com /etc/nginx/sites-enabled/test-api.loadimpact.com
+COPY devops/conf/nginx/test-api.k6.io /etc/nginx/sites-enabled/test-api.k6.io
 
 # Custom Supervisord config
 COPY devops/conf/supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Add source code
-COPY . /srv/test-api.loadimpact.com/
+COPY . /srv/test-api.k6.io/
 
 # Collect static files
 RUN python project/manage.py collectstatic --noinput -v1
