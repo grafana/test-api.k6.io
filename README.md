@@ -1,9 +1,15 @@
-# test-api.k6.io
+<p align="center"><a href="https://k6.io/"><img src="static_resources/logo.svg" alt="k6" width="220" height="213" /></a></p>
 
-This is a simple API project that is a good target for load testing. 
+<h3 align="center">test-api.k6.io</h3>
+<p align="center">Simple REST API project that is a good target for experimental load testing.</p>
+
+<br/>
+<img src="static_resources/github-hr.png" alt="---" />
+<br/>
+
 It contains several authentication mechanisms, private and public endpoints, etc. 
 
-### development 
+# development 
 
 ```bash
 cd test-api.k6.io
@@ -22,7 +28,7 @@ cd test_api
 ./devops/loaddata.sh
 ```
 
-## Browseable API
+### Browseable API
 
 Nice feature of this project is that APIs are "browseable", and can be easily explored by developers via the web interface.
 
