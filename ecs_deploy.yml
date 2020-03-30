@@ -12,5 +12,5 @@ task:
   command:
     - python
     - project/manage.py
-    - migrate
-    - --noinput
+    - loaddata
+    - devops/fixtures/initial.json
