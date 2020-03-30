@@ -10,4 +10,7 @@ default_tags:
 
 task:
   command:
-    - ./devops/loaddata.sh
+    - python
+    - project/manage.py
+    - loaddata
+    - devops/fixtures/initial.json
