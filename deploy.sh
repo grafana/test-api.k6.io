@@ -33,7 +33,7 @@ if [ -z $AWS_ACCESS_KEY_ID ] || [ -z $AWS_SECRET_ACCESS_KEY ]; then
 fi
 
 pip install --upgrade \
-    --extra-index-url https://pypi.fury.io/nb4o5eUFa3gxr5AW9rVX/loadimpact/ \
+    --extra-index-url https://pypi.fury.io/lagMf-EFnsMRC0ASUWawyQ0xHucXjjg/loadimpact/ \
     li_ecs_deploy==1.4
 
 deploy -t $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM -e $AWS_ENV -r $AWS_REGION task
