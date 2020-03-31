@@ -4,7 +4,7 @@ image: loadimpact/test-api.loadimpact.com
 
 cluster:
   production: demosites-cluster-production
-  staging: external-cluster-staging
+  staging: demosites-cluster-staging
 
 default_tags:
   production: latest
