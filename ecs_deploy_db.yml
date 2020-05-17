@@ -1,6 +1,6 @@
 ---
-task_family: test-api-loadimpact-com
-image: loadimpact/test-api.loadimpact.com
+task_family: test-api-k6-io
+image: loadimpact/test-api.k6.io
 
 cluster:
   production: demosites-cluster-production

@@ -5,7 +5,7 @@ from django_secrets import AwsSecrets
 
 from .._base import *
 
-secret = AwsSecrets(secrets_root='staging/test-api-loadimpact-com/',
+secret = AwsSecrets(secrets_root='staging/test-api-k6-io/',
                     region_name='eu-west-1').get_secret
 
 DEBUG = False
