@@ -2,7 +2,6 @@ FROM python:3.7.3-alpine
 
 EXPOSE 80
 ENV PYTHONUNBUFFERED 1
-ENV DJANGO_SETTINGS_MODULE=settings.api.prod
 
 RUN addgroup -g 82 -S www-data && adduser -u 82 -D -S -G www-data www-data
 RUN mkdir -p /var/lib/uwsgi /var/log/uwsgi && chown www-data /var/lib/uwsgi /var/log/uwsgi
@@ -36,6 +35,7 @@ COPY . /srv/test-api.k6.io/
 # Collect static files
 RUN python project/manage.py collectstatic --noinput -v1
 
+# Add ecs environment variable for non-root processes
 RUN echo 'export $(strings /proc/1/environ | grep AWS_CONTAINER_CREDENTIALS_RELATIVE_URI)' >> /root/.profile
 RUN echo 'export $(strings /proc/1/environ | grep AWS_CONTAINER_CREDENTIALS_RELATIVE_URI)' >> /home/www-data/.profile
 

@@ -1,16 +1,18 @@
 ---
-task_family: test-api-loadimpact-com
-image: loadimpact/test-api.loadimpact.com
+task_family: test-api-k6-io
+image: loadimpact/test-api.k6.io
 
 cluster:
   production: demosites-cluster-production
+  staging: demosites-cluster-staging
 
 default_tags:
   production: latest
+  staging: staging
 
 task:
   command:
     - python
     - project/manage.py
     - migrate
-    - --noinput 
+    - --noinput

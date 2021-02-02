@@ -5,8 +5,8 @@ from django_secrets import AwsSecrets
 
 from .._base import *
 
-secret = AwsSecrets(secrets_root='production/test-api-k6-io/',
-                    region_name='us-east-1').get_secret
+secret = AwsSecrets(secrets_root='staging/test-api-k6-io/',
+                    region_name='eu-west-1').get_secret
 
 DEBUG = False
 
@@ -21,4 +21,4 @@ DATABASES = {
     'default': secret('django_database')
 }
 
-ROOT_URLCONF = 'urls.prod'
+ROOT_URLCONF = 'urls.staging'
