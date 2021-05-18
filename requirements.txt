@@ -1,4 +1,5 @@
 Django==2.2.10
+channels==2.4.0
 djangorestframework==3.9.4
 dateutils==0.6.6
 djangorestframework-simplejwt==4.3.0

@@ -23,6 +23,7 @@ INSTALLED_APPS = [
 
     'apps.api',
     'apps.pages',
+    'channels',
 ]
 
 MIDDLEWARE = [
