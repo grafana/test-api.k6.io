@@ -2,6 +2,10 @@ upstream test_api {
     server unix:/var/lib/uwsgi/uwsgi_test_api.sock;
 }
 
+upstream test_api-ws {
+    server localhost:8000;
+}
+
 server {
     listen 80 default_server;
     charset utf-8;
@@ -13,10 +17,15 @@ server {
     }
 
     location /ws/ {
-        proxy_pass http://localhost:8001; # daphne (ASGI) listening on port 8001
-        proxy_http_version 1.1;
+        proxy_pass http://test_api-ws;  
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
+
+        proxy_redirect off;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Host $server_name;
     }
 
     location / {
