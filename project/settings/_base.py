@@ -23,6 +23,7 @@ INSTALLED_APPS = [
 
     'apps.api',
     'apps.pages',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +53,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'wsgi.application'
+ASGI_APPLICATION = "asgi.application"
+
+CHANNEL_LAYERS = {
+    'default': {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    },
+}
+
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {

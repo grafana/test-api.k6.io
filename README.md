@@ -13,7 +13,7 @@ It contains several authentication mechanisms, private and public endpoints, etc
 
 ```bash
 cd test-api.k6.io
-pyvenv3 .venv
+python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ./project/manage.py runserver

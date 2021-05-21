@@ -17,5 +17,5 @@ DATABASES = {
     },
 }
 
-SECRET_KEY = secrets.get_secret('django_secret_key', 'SECRET_KEY')
+SECRET_KEY = 'secret'
 ROOT_URLCONF = 'urls.dev'
