@@ -1,4 +1,4 @@
-FROM python:3.7.3-alpine
+FROM python:3.9.5-alpine
 
 EXPOSE 80
 ENV PYTHONUNBUFFERED 1
@@ -14,10 +14,16 @@ RUN apk add --no-cache \
     nginx \
     uwsgi \
     uwsgi-python3 \
+    musl-dev \
+    cargo \
+    openssl-dev \
+    libffi-dev \
     supervisor \
     build-base \
+    mysql-client \
     mariadb-connector-c-dev && \
     rm -r /usr/lib/python*/ensurepip && \
+    pip3 install --upgrade pip && \
     pip3 install -r /srv/test-api.k6.io/requirements.txt && \
     rm /etc/nginx/conf.d/default.conf && \
     rm -r /root/.cache

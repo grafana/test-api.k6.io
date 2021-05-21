@@ -7,12 +7,13 @@ let sessionDuration = randomIntBetween(2000, 5000);
 let chatRoomName = 'publicRoom'; // choose your name
 
 export default function () {
-  let url = 'ws://127.0.0.1:8000/ws/crocochat/xxx/';
+  let url = `ws://127.0.0.1:8080/ws/crocochat/${chatRoomName}/`;
   let params = { tags: { my_tag: 'my ws session' } };
 
   let res = ws.connect(url, params, function (socket) {
     socket.on('open', function open() {
-      console.log(`VU ${__VU}: connected`);
+      console.log(`VU ${__VU}: 
+      connected`);
 
       socket.send(JSON.stringify({'event': 'SET_NAME', 'new_name': `Croc ${__VU}`}));
 

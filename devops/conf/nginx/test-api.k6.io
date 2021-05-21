@@ -12,6 +12,13 @@ server {
         access_log off;
     }
 
+    location /ws/ {
+        proxy_pass http://localhost:8001; # daphne (ASGI) listening on port 8001
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+
     location / {
         uwsgi_pass test_api;
 
