@@ -1,6 +1,3 @@
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
-
 from django_secrets import AwsSecrets
 
 from .._base import *
@@ -11,11 +8,6 @@ secret = AwsSecrets(secrets_root='staging/test-api-k6-io/',
 DEBUG = False
 
 SECRET_KEY = secret('django_secret_key', 'SECRET_KEY')
-
-sentry_sdk.init(
-    dsn=secret('sentry', 'dsn'),
-    integrations=[DjangoIntegration()]
-)
 
 DATABASES = {
     'default': secret('django_database')

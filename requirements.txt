@@ -4,7 +4,6 @@ channels==3.0.3
 djangorestframework==3.12.4
 dateutils==0.6.6
 djangorestframework-simplejwt==4.3.0
-sentry-sdk==0.9.5
 mysqlclient==1.4.2
 
 boto3==1.12.15
