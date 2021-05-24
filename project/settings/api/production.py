@@ -13,4 +13,4 @@ DATABASES = {
     'default': secret('django_database')
 }
 
-ROOT_URLCONF = 'urls.prod'
+ROOT_URLCONF = 'urls.production'
