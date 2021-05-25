@@ -41,6 +41,10 @@ pip install --upgrade \
     --extra-index-url "$K6_PYPI_URL" \
     li_ecs_deploy
 
+echo "##################"
+echo $LOADIMPACT_ENVIRONMENT
+echo "##################"
+
 deploy -t $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM -e $AWS_ENV -r $AWS_REGION task
 deploy -f ecs_deploy_db.yml -t $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM -e $AWS_ENV -r $AWS_REGION task
 deploy -t $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM -e $AWS_ENV -r $AWS_REGION --force
