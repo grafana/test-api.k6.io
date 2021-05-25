@@ -2,7 +2,7 @@ from django_secrets import AwsSecrets
 
 from .._base import *
 
-secret = AwsSecrets(secrets_root='production/test-api-k6-io/',
+secret = AwsSecrets(secrets_root='production/test-api/',
                     region_name='us-east-1').get_secret
 
 DEBUG = False
