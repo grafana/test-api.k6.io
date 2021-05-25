@@ -20,7 +20,6 @@ RUN apk add --no-cache \
     libffi-dev \
     supervisor \
     build-base \
-    mysql-client \
     mariadb-connector-c-dev && \
     rm -r /usr/lib/python*/ensurepip && \
     pip3 install --upgrade pip && \
