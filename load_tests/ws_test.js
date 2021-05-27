@@ -1,13 +1,17 @@
 import { randomString, randomIntBetween } from "https://jslib.k6.io/k6-utils/1.1.0/index.js";
-
 import ws from 'k6/ws';
 import { check, sleep } from 'k6';
 
 let sessionDuration = randomIntBetween(5000, 60000); // user session between 5s and 1m
 let chatRoomName = 'publicRoom'; // choose your chat room name
 
+export let options = {
+  vus: 10,
+  iterations: 10,
+};
+
 export default function () {
-  let url = `wss://test-api.k6.io//ws/crocochat/${chatRoomName}/`;
+  let url = `wss://test-api.k6.io/ws/crocochat/${chatRoomName}/`;
   let params = { tags: { my_tag: 'my ws session' } };
 
   let res = ws.connect(url, params, function (socket) {
@@ -36,13 +40,13 @@ export default function () {
     socket.on('message', function (message){
       let msg = JSON.parse(message);
       if(msg.event === 'CHAT_MSG'){
-        console.log(`VU ${__VU}: ${msg.user} says: ${msg.message}`)
+        console.log(`VU ${__VU} received: ${msg.user} says: ${msg.message}`)
       }
       else if(msg.event === 'ERROR'){
-        console.error(`VU ${__VU}: Received Message: ${msg.message}`)
+        console.error(`VU ${__VU} received:: ${msg.message}`)
       }
       else{
-        console.log(`VU ${__VU}: ${msg.message}`)
+        console.log(`VU ${__VU} received unhandled message: ${msg.message}`)
       }
     });
 
