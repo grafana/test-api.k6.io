@@ -46,7 +46,7 @@ pre[class*=language-] {
 }
 
 :not(pre) > code[class*=language-] {
-  padding: .1em;
+  padding: .0em;
   border-radius: .3em;
   white-space: normal
 }
@@ -102,7 +102,7 @@ pre[class*=language-] {
 
 pre.language-js {
   background: #f7f7f7 !important;
-  margin-bottom: 30px;
+  margin-right: 30px;
 }
 
 .code.language-js {
@@ -285,11 +285,16 @@ max-width: 8em;
 word-break: break-all;
 }
 
+table pre[class*=language-js] {
+  padding: .2em .4em;
+  line-height: 1;
+}
+
 thead tr th:nth-child(2),
 tbody tr td:nth-child(2){
-width: 12em;
-min-width: 12em;
-max-width: 12em;
+width: 16em;
+min-width: 16em;
+max-width: 16em;
 word-break: break-all;
 
 }
@@ -306,6 +311,7 @@ word-break: break-all;
 h2 {
   margin-bottom: 10px;
 }
-  pre{
-      padding: 10px;
-  }
+pre{
+  padding: 0px;
+  margin: 0px;
+}

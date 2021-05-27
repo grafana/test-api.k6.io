@@ -28,7 +28,8 @@ class CrocoChatRoom(AsyncJsonWebsocketConsumer):
             'type': 'send_message',
             'room': self.room_name,
             'message': f'{self._get_name()} joined',
-            "event": "SOMEONE_JOINED"
+            "user": self._get_name(),
+            "event": "USER_JOINED"
         })
 
 
@@ -62,11 +63,11 @@ class CrocoChatRoom(AsyncJsonWebsocketConsumer):
             # Send message to room group
             await self.channel_layer.group_send(self.room_group_name, {
                 'type': 'send_message',
-                "event": "CHAT_MESSAGE",
+                "event": "CHAT_MSG",
                 'room': self.room_name,
                 "user": self._get_name(),
 
-                'message': f"{self._get_name()} says '{message}'",
+                'message': message,
             })
         elif event == 'LEAVE':
             print(f"{self._get_name()} wants to leave")

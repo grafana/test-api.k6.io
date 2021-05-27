@@ -19,7 +19,7 @@
         </div>
         <div>
             <h1 class="title">test-api.<span class="text-blue">k6</span>.io</h1>
-            <p class="description">Collection of APIs and examples demonstrating the power of k6</p>
+            <p class="description">Collection of HTTP and WebSocket APIs demonstrating the power of k6</p>
         </div>
         <ul class="header-icons">
             <li>
@@ -43,6 +43,7 @@
         </ul>
     </header>
     <section class="page-section">
+        <h1>HTTP REST APIs</h1>
         <h2 class="heading-underlined">Public APIs</h2>
         <table>
             <tbody>
@@ -126,10 +127,69 @@
             </tr>
             </tbody>
         </table>
+        <h2 class="heading-underlined">WebSocket APIs</h2>
+        <table>
+            <tbody>
+            <tr>
+                <td>CONNECT</td>
+                <td colspan="2"><a href="/public/crocodiles/">/ws/crocochat/{room-name}/</a></td>
+                <td>WS URL to join chat in {room-name}.</td>
+            </tr>
+            <tr>
+                <td>message out<br>SET_NAME</td>
+                <td colspan="2">
+                    <pre><code class="code narrow language-js">{
+  "event": "SET_NAME",
+  "new_name": "MyName"
+}</code></pre></td>
+                <td>Outgoing WebSocket message. Sets the User name in the chat</td>
+            </tr>
+            <tr>
+                <td>message out<br>SAY</td>
+                <td colspan="2">
+                    <pre><code class="code narrow language-js">{
+  "event": "SAY",
+  "message": "Hello"
+}</code></pre></td>
+                <td>Outgoing WebSocket message. Sends message to everyone in the room</td>
+            </tr>
+            <tr>
+                <td>message in<br>USER_JOINED</td>
+                <td colspan="2">
+                    <pre><code class="code narrow language-js">{
+  "event": "USER_JOINED",
+  "user": "username",
+  "room": "room-name"
+}</code></pre></td>
+                <td>Incoming WebSocket message. Someone joined the chat</td>
+            </tr>
+            <tr>
+                <td>message in<br>CHAT_MSG</td>
+                <td colspan="2">
+                    <pre><code class="code narrow language-js">{
+  "event": "CHAT_MSG",
+  "user": "username",
+  "room": "room-name",
+  "message": "message"
+}</code></pre></td>
+                <td>Incoming WebSocket message. Received by everyone in the room after user sends a `SAY` message</td>
+            </tr>
+            <tr>
+                <td>message out<br>LEAVE</td>
+                <td colspan="2">
+                    <pre><code class="code narrow language-js">{
+  "event": "LEAVE",
+  "user": "username",
+  "room": "room-name"
+}</code></pre></td>
+                <td>Incoming/outgoing WebSocket message. Sent by user who wants to leave. Received by everyone in the room</td>
+            </tr>
+            </tbody>
+        </table>
     </section>
 
     <section class="page-section">
-        <h2>Sample script</h2>
+        <h2>Sample HTTP script</h2>
 
         <pre>
 <code class="code language-js">  import http from 'k6/http';
