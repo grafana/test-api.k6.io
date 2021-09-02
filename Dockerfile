@@ -23,7 +23,6 @@ RUN apk add --no-cache \
     pip3 install --upgrade pip && \
     pip3 install uwsgi  && \
     pip3 install -r /srv/test-api.k6.io/requirements.txt && \
-    rm /etc/nginx/conf.d/default.conf && \
     rm -r /root/.cache
 
 # Copy the Nginx configs
