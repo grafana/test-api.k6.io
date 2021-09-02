@@ -3,7 +3,7 @@ FROM python:3.9.5-alpine
 EXPOSE 80
 ENV PYTHONUNBUFFERED 1
 
-RUN addgroup -g 82 -S www-data && adduser -u 82 -D -S -G www-data www-data
+RUN adduser -u 82 -D -S -G www-data www-data
 RUN mkdir -p /var/lib/uwsgi /var/log/uwsgi && chown www-data /var/lib/uwsgi /var/log/uwsgi
 
 COPY requirements.txt /srv/test-api.k6.io/requirements.txt
