@@ -16,11 +16,10 @@ RUN apk add --no-cache \
     cargo \
     openssl-dev \
     libffi-dev \
-    supervisor \
     build-base \
     mariadb-connector-c-dev && \
-    rm -r /usr/lib/python*/ensurepip && \
     pip3 install --upgrade pip && \
+    pip3 install supervisor && \
     pip3 install uwsgi  && \
     pip3 install -r /srv/test-api.k6.io/requirements.txt && \
     rm -r /root/.cache
@@ -42,4 +41,4 @@ RUN python project/manage.py collectstatic --noinput -v1
 RUN echo 'export $(strings /proc/1/environ | grep AWS_CONTAINER_CREDENTIALS_RELATIVE_URI)' >> /root/.profile
 RUN echo 'export $(strings /proc/1/environ | grep AWS_CONTAINER_CREDENTIALS_RELATIVE_URI)' >> /home/www-data/.profile
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+CMD ["/usr/local/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
