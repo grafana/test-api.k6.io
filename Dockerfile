@@ -17,6 +17,7 @@ RUN apk add --no-cache \
     openssl-dev \
     libffi-dev \
     build-base \
+    rm -r /usr/local/lib/python*/ensurepip && \
     mariadb-connector-c-dev && \
     pip3 install --upgrade pip && \
     pip3 install supervisor && \
