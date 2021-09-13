@@ -1,8 +1,0 @@
-kind: Service
-apiVersion: v1
-metadata:
-  name: k6-test-api
-spec:
-  ports:
-    - port: 80
-      targetPort: 8000
