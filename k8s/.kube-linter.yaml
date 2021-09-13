@@ -1,0 +1,13 @@
+# See details at https://docs.kubelinter.io/#/configuring-kubelinter
+
+checks:
+  addAllBuiltIn: true
+
+  exclude:
+  - "minimum-three-replicas"
+  - "exposed-services"
+  - "required-annotation-email"
+  - "required-label-owner"
+  - "no-rolling-update-strategy"
+  - "access-to-secrets"
+
