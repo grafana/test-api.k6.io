@@ -24,10 +24,8 @@ WORKDIR /app/project
 # Commands
 
 # Default command starts guicorn serving http requests
-CMD ["python", "manage.py", "collectstatic", "--noinput", "-v1", "&&", \
-    "gunicorn", \
-    "--worker-class", "gthread", \
-    "--workers=1", "--threads=5", \
+CMD ["gunicorn", \
+    "--workers=4", \
     "--worker-tmp-dir", "/dev/shm", \
     "--log-file=-", \
     "--bind", "0.0.0.0:8000", \
