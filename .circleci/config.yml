@@ -14,6 +14,11 @@ jobs:
             docker tag loadimpact/test-api.k6.io:latest loadimpact/test-api.k6.io:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
             docker push loadimpact/test-api.k6.io:latest
             docker push loadimpact/test-api.k6.io:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
+
+            # build k8s image
+            docker build -f ./k8s/Dockerfile -t loadimpact/test-api.k6.io:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM-k8s .
+            docker push loadimpact/test-api.k6.io:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM-k8s
+
       - deploy:
           command: sudo -E ./deploy.sh
   build-and-deploy-staging:
@@ -30,6 +35,11 @@ jobs:
             docker tag loadimpact/test-api.k6.io:staging loadimpact/test-api.k6.io:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
             docker push loadimpact/test-api.k6.io:staging
             docker push loadimpact/test-api.k6.io:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
+
+            # build k8s image
+            docker build -f ./k8s/Dockerfile -t loadimpact/test-api.k6.io:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM-k8s .
+            docker push loadimpact/test-api.k6.io:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM-k8s
+
       - deploy:
           command: sudo -E ./deploy.sh
 
