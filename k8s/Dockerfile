@@ -1,4 +1,4 @@
-FROM python:3.9.7-slim-bullseye
+FROM python:3.9-slim-bullseye
 
 RUN apt-get update && apt-get -y upgrade && \
     export DEBIAN_FRONTEND=noninteractive && \
@@ -8,10 +8,11 @@ RUN apt-get update && apt-get -y upgrade && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+RUN useradd --uid 1000 --create-home appuser
+
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN useradd --uid 1000 --create-home appuser
 USER appuser
 
 WORKDIR /app
@@ -23,7 +24,7 @@ WORKDIR /app/project
 
 # Commands
 
-# Default command starts guicorn serving http requests
+# Default command starts gunicorn serving http requests
 CMD ["gunicorn", \
     "--workers=4", \
     "--worker-tmp-dir", "/dev/shm", \
@@ -31,7 +32,7 @@ CMD ["gunicorn", \
     "--bind", "0.0.0.0:8000", \
     "wsgi"]
 
-# Use alternative command to start daphne servign websockets
+# Use alternative command to start daphne serving websockets
 # CMD ["daphne", "-p", "8000", "--access-log", "-", "--proxy-headers", "asgi:application"]
 
 # Collecting static files command
