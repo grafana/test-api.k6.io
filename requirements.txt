@@ -9,3 +9,4 @@ mysqlclient==1.4.2
 boto3==1.12.15
 
 daphne==3.0.2
+gunicorn==20.1.0
