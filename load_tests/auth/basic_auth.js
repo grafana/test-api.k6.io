@@ -1,34 +1,28 @@
-import http from "k6/http";
-
-import { check, group, sleep, fail } from "k6";
-import { Counter, Rate, Trend } from "k6/metrics";
+import { sleep } from "k6";
 import encoding from "k6/encoding";
+
+import { crocodiles } from "../modules/register_users.js"
 
 export let options = {
     duration: '1m',
     vus: 5,
 };
 
-let BASE_URL = 'http://127.0.0.1:8000';
-let USERNAME = 'user';
-let PASSWORD = 'test123!';
+const conf = {
+    baseURL: __ENV.BASE_URL || "https://test-api.k6.io"
+}
 
-let authHeaders = {
-    headers: {
-        "Authorization": "Basic " + encoding.b64encode(`${USERNAME}:${PASSWORD}`)
-    }
-};
 
 export default function() {
+    const username = 'user'
+    const password = 'test123!'
+    const crocs = crocodiles(conf.baseURL, {
+        headers: {
+            "Authorization": "Basic " + encoding.b64encode(`${username}:${password}`)
+        }
+    });
 
-    let crocsRes = http.get(`${BASE_URL}/crocodiles/`, authHeaders);
-
-
-    check(crocsRes, {
-        "got crocs": (r) => r.status === 200,
-    }) || fail("could not get crocs");
-
-    console.log(crocsRes.body);
+    crocs.list()
 
     sleep(1);
 }
