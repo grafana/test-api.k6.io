@@ -1,6 +1,8 @@
-import { sleep } from "k6";
+import { sleep, check, fail } from "k6";
 
-import { auth, crocodiles } from "../modules/register_users.js"
+import { auth } from "../modules/auth.js"
+import { crocodiles } from "../modules/crocodiles.js"
+
 
 export let options = {
     duration: '1m',
@@ -12,14 +14,20 @@ const conf = {
 }
 
 export default function() {
-
     const authn = auth(conf.baseURL)
-    authn.cookieLogin({ username: 'user', password: 'test123!', email: 'user@example.com'})
-
     const crocs = crocodiles(conf.baseURL)
-    crocs.list()
 
-    authn.cookieLogout({ username: 'user', password: 'test123!'});
+    check(
+        authn.cookieLogin({ username: 'user', password: 'test123!'}),
+        authn.cookieLoginChecks('user@example.com')
+    ) || fail("could not log in");
+
+
+
+    check(crocs.list(), crocs.listChecks()) || fail("could not get crocs");
+
+    let res = authn.cookieLogout()
+    check(res, authn.cookieLogoutChecks()) || fail(`could not get logout: ${res.status} ${res.body}`);
 
     sleep(1);
 }

@@ -7,13 +7,13 @@ import { publicApi } from "./modules/public_api.js"
 
 
 const conf = {
-  baseURL: __ENV.BASE_URL || "https://test-api-main.staging.k6.io"
+  baseURL: __ENV.BASE_URL || "https://test-api.k6.io"
 }
 
 
 export let options = {
   stages: [
-    {target: 1000, duration: "1m"},
+    {target: 10, duration: "1m"},
   ],
   thresholds: {
     "http_req_duration": ["p(95)<500"],
@@ -35,18 +35,20 @@ export default function() {
 
     group("Public endpoints", () => {
       
-      pbApi.crocodiles()
+      resp = pbApi.crocodiles()
+      resp.map(r => check(r, pbApi.crocodileChecks()))
     });
 
     group("Login", () => {
-        authn.cookieLogin({
-            username: 'user',
-            password: 'test123!',
-            email: 'user@example.com'
-        }, timeToFirstByte);
+      resp = authn.cookieLogin({ username: 'user', password: 'test123!'})
 
-        resp = crocs.list();
-        check(resp, crocs.listChecks()) || fail("could not get crocs")
+      check(
+        resp, authn.cookieLoginChecks('user@example.com')
+      ) || fail("could not log in");
+      
+      timeToFirstByte.add(resp.timings.waiting, {ttfbURL: resp.url});
+
+      check(crocs.list(), crocs.listChecks()) || fail("could not get crocs")
     });
 
     let newCrocID = null;
@@ -77,10 +79,12 @@ export default function() {
     });
 
     group("Log me out!", () => {
-        authn.cookieLogout({})
+        check(authn.cookieLogout(), authn.cookieLogoutChecks())
+  
         check(crocs.list(), {
           "got crocs": (r) => r.status === 401,
         }) || fail("ERROR: I'm still logged in!");
+
     });
 
     sleep(1);

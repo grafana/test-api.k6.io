@@ -1,15 +1,15 @@
-import { sleep } from "k6";
+import { sleep, check } from "k6";
 import encoding from "k6/encoding";
 
-import { crocodiles } from "../modules/register_users.js"
+import { crocodiles } from "../modules/crocodiles.js"
 
 export let options = {
-    duration: '1m',
+    duration: '20s',
     vus: 5,
 };
 
 const conf = {
-    baseURL: __ENV.BASE_URL || "https://test-api.k6.io"
+    baseURL: __ENV.BASE_URL || "https://test-api-main.staging.k6.io"
 }
 
 
@@ -22,7 +22,7 @@ export default function() {
         }
     });
 
-    crocs.list()
+    check(crocs.list(), crocs.listChecks()) || fail("could not get crocs")
 
     sleep(1);
 }

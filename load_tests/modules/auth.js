@@ -1,27 +1,30 @@
 import http from "k6/http";
 
-import { check, fail } from "k6";
-
 
 export const auth = function(baseURL) {
 
     const register = function(credentials) {
-        let createResp = http.post(`${baseURL}/user/register/`, credentials);
-    
-        check(createResp, {
+        return http.post(`${baseURL}/user/register/`, credentials);
+    }
+
+    const registerChecks = function() {
+        return {
             "created user": (r) => r.status === 201,
-        }) || fail(`could not register. Error: ${createResp.body} `);
+        }
     }
 
     const login = function({ username, password }) {
-        let loginRes = http.post(`${baseURL}/auth/token/login/`, { username, password });
+        return http.post(`${baseURL}/auth/token/login/`, { username, password });
+    }
+
+    const loginChecks = function() {
+        return {
+            "logged in successfully": (r) => r.json('access') !== '',
+        }
+    }
     
-        let authToken = loginRes.json('access');
-
-        check(authToken, {
-            "logged in successfully": (authToken) => authToken !== '',
-        });
-
+    const authHeader = function (loginResponse) {
+        const authToken = loginResponse.json('access');
         return {
             headers: {
                 Authorization: `Bearer ${authToken}`
@@ -30,26 +33,29 @@ export const auth = function(baseURL) {
     }
 
     const cookieLogin = function({ username, password, email }, timeToFirstByte) {
-        const loginRes = http.post(`${conf.baseURL}/auth/cookie/login/`, { username, password });
+        return http.post(`${conf.baseURL}/auth/cookie/login/`, { username, password });
+    }
 
-        check(loginRes, {
+    const cookieLoginChecks = function(email) {
+        return {
             "login successful": (r) => r.status === 200,
-        }) || fail("could not log in");
-
-        check(loginRes, {
             "user email is correct": (r) => r.json('email') === email,
-        });
-
-        if (timeToFirstByte) {
-            timeToFirstByte.add(loginRes.timings.waiting, {ttfbURL: loginRes.url});
-        }
-
-        return loginRes;
+        };
     }
 
-    const cookieLogout = function({ username, password }) {
-        http.post(`${conf.baseURL}/auth/cookie/logout/`, { username, password });
+    const cookieLogout = function() {
+        return http.post(`${conf.baseURL}/auth/cookie/logout/`);
     }
 
-    return { register, login, cookieLogin, cookieLogout }
+    const cookieLogoutChecks = function() {
+        return {
+            "logout successful": (r) => r.status === 200
+        };
+    }
+
+    return {
+        register, login, cookieLogin, cookieLogout, authHeader,
+        registerChecks, loginChecks, cookieLoginChecks, cookieLogoutChecks
+    }
+
 }

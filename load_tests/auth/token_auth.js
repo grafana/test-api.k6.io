@@ -1,6 +1,7 @@
-import { sleep } from "k6";
+import { check, sleep } from "k6";
 
-import { auth, crocodiles } from "../modules/register_users.js"
+import { auth } from "../modules/auth.js"
+import { crocodiles } from "../modules/crocodiles.js"
 
 
 export let options = {
@@ -12,13 +13,15 @@ const conf = {
     baseURL: __ENV.BASE_URL || "https://test-api.k6.io"
 }
 
-
 export default function() {
     const authn = auth(conf.baseURL)
-    const authHeaders = authn.login({ username: 'user', password: 'test123!'});
 
+    const loginRes = authn.login({ username: 'user', password: 'test123!'})
+    check(loginRes, authn.loginChecks)
+
+    const authHeaders = authn.authHeader(loginRes);
     const crocs = crocodiles(conf.baseURL, authHeaders)
-    crocs.list()
+    check(crocs.list(), crocs.listChecks)
 
     sleep(1);
 }
