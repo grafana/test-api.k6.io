@@ -1,7 +1,7 @@
 import { check, sleep } from "k6";
 
-import { auth } from "../modules/auth.js"
-import { crocodiles } from "../modules/crocodiles.js"
+import { authAPI } from "../lib/auth_api.js"
+import { crocodilesAPI } from "../lib/crocodiles_api.js"
 
 
 export let options = {
@@ -14,13 +14,13 @@ const conf = {
 }
 
 export default function() {
-    const authn = auth(conf.baseURL)
+    const auth = authAPI(conf.baseURL)
 
-    const loginRes = authn.login({ username: 'user', password: 'test123!'})
-    check(loginRes, authn.loginChecks)
+    const loginRes = auth.login({ username: 'user', password: 'test123!'})
+    check(loginRes, auth.loginChecks)
 
-    const authHeaders = authn.authHeader(loginRes);
-    const crocs = crocodiles(conf.baseURL, authHeaders)
+    const authHeaders = auth.authHeader(loginRes);
+    const crocs = crocodilesAPI(conf.baseURL, authHeaders)
     check(crocs.list(), crocs.listChecks)
 
     sleep(1);

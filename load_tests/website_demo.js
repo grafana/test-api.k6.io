@@ -1,6 +1,8 @@
 import http from "k6/http";
 import { check, group, sleep } from "k6";
-import { Counter, Rate, Trend } from "k6/metrics";
+import { Rate, Trend } from "k6/metrics";
+
+import { webPage } from './lib/webpage.js'
 
 /* Options
 Global options for your script
@@ -10,9 +12,9 @@ ext - Options used by Load Impact cloud service test name and distribution
 */
 export let options = {
     stages: [
-        { target: 200, duration: "1m" },
-        { target: 200, duration: "3m" },
-        { target: 0, duration: "1m" }
+        { target: 2, duration: "1m" },
+        // { target: 200, duration: "3m" },
+        // { target: 0, duration: "1m" }
     ],
     thresholds: {
         "http_req_duration": ["p(95)<500"],
@@ -32,34 +34,49 @@ export let options = {
 
 // Custom metrics
 // We instatiate them before our main function
-var successfulLogins = new Counter("successful_logins");
-var checkFailureRate = new Rate("check_failure_rate");
-var timeToFirstByte = new Trend("time_to_first_byte", true);
+const checkFailureRate = new Rate("check_failure_rate");
+const timeToFirstByte = new Trend("time_to_first_byte", true);
 
+
+function getBool(value) { return ["1", "t", "true", "True"].includes(value) }
 
 const conf = {
     baseURL: __ENV.BASE_URL || "https://test-api.k6.io",
-    urlAlert: __ENV.URL_ALERT
+    urlAlert: getBool(__ENV.URL_ALERT)
 }
 
 /* Main function
 The main function is what the virtual users will loop over during test execution.
 */
 export default function() {
-    const website = websiteDemo(conf.baseURL, conf.urlAlert);
+    const webp = webPage(conf.baseURL, conf.urlAlert);
+
+    let resp;
+
     // We define our first group.  Pages natually fit a concept of a group
     // You may have other similar actions you wish to "group" together
     group("Front page", function() {
-        website.frontPage(checkFailureRate, timeToFirstByte);
+        // Record time to first byte and tag it with the URL to be able to filter the results in Insights
+        resp = webp.frontPage()
+        timeToFirstByte.add(resp.timings.waiting, { ttfbURL: resp.url });
+
+        // Record check failures
+        const chRes = check(resp, webp.frontPageChecks());
+        checkFailureRate.add(!chRes);
+  
         // Load static assets
         group("Static assets", function() {
-            website.staticAssets(checkFailureRate, timeToFirstByte);
+            // Record time to first byte and tag it with the URL to be able to filter the results in Insights
+            resp = webp.staticAssets();
+            timeToFirstByte.add(resp[0].timings.waiting, { ttfbURL: resp[0].url, staticAsset: "yes" });
+            timeToFirstByte.add(resp[1].timings.waiting, { ttfbURL: resp[1].url, staticAsset: "yes" });
+
+            // Record check failures
+            const chRes = check(resp[0], webp.staticAssetsChecks())
+            checkFailureRate.add(!chRes);
         });
+
         sleep(10);
     });
-  
-    group("Login", function() {
-        website.staticAssets(checkFailureRate, timeToFirstByte, successfulLogins);
-        sleep(10);
-    });
+
 }

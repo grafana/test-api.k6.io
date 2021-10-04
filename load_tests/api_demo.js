@@ -1,19 +1,21 @@
 import {group, sleep, fail, check} from "k6";
 import {Trend} from "k6/metrics";
 
-import { auth } from "./modules/auth.js"
-import { crocodiles } from "./modules/crocodiles.js"
-import { publicApi } from "./modules/public_api.js"
+import { authAPI } from "./lib/auth_api.js"
+import { crocodilesAPI } from "./lib/crocodiles_api.js"
+import { publicAPI } from "./lib/public_api.js"
 
 
 const conf = {
-  baseURL: __ENV.BASE_URL || "https://test-api.k6.io"
+  baseURL: __ENV.BASE_URL || "https://test-api.k6.io",
+  username: "nkjshjkcckjhxewewjfhxkjqehnqlx@example.com",
+  password: "secret"
 }
 
 
 export let options = {
   stages: [
-    {target: 10, duration: "1m"},
+    { target: 500, duration: "1m" },
   ],
   thresholds: {
     "http_req_duration": ["p(95)<500"],
@@ -22,28 +24,39 @@ export let options = {
   },
 };
 
-
 let timeToFirstByte = new Trend("time_to_first_byte", true);
 
+export function setup() {
+  const { baseURL, username, password } = conf;
+  const auth = authAPI(baseURL);
+  const resp = auth.register({
+    first_name: "Crocodile",
+    last_name: "Owner",
+    username,
+    password,
+    email: username,
+  });
+  check(resp, auth.registerChecks());
+}
 
 export default function() {
-    const authn = auth(conf.baseURL);
-    const crocs = crocodiles(conf.baseURL);
-    const pbApi = publicApi(conf.baseURL);
+    const { baseURL, username, password } = conf;
+    const auth = authAPI(baseURL);
+    const crocs = crocodilesAPI(baseURL);
+    const pb = publicAPI(baseURL);
 
-    let resp, chks;
+    let resp;
 
     group("Public endpoints", () => {
-      
-      resp = pbApi.crocodiles()
-      resp.map(r => check(r, pbApi.crocodileChecks()))
+      resp = pb.crocodiles()
+      resp.map((r) => check(r, pb.crocodileChecks()))
     });
 
     group("Login", () => {
-      resp = authn.cookieLogin({ username: 'user', password: 'test123!'})
+      resp = auth.cookieLogin({ username, password })
 
       check(
-        resp, authn.cookieLoginChecks('user@example.com')
+        resp, auth.cookieLoginChecks(username)
       ) || fail("could not log in");
       
       timeToFirstByte.add(resp.timings.waiting, {ttfbURL: resp.url});
@@ -51,7 +64,7 @@ export default function() {
       check(crocs.list(), crocs.listChecks()) || fail("could not get crocs")
     });
 
-    let newCrocID = null;
+    let newCrocID;
     group("Retrieve and modify crocodiles", () => {
         // create new croc
         resp = crocs.register({
@@ -79,7 +92,7 @@ export default function() {
     });
 
     group("Log me out!", () => {
-        check(authn.cookieLogout(), authn.cookieLogoutChecks())
+        check(auth.cookieLogout(), auth.cookieLogoutChecks())
   
         check(crocs.list(), {
           "got crocs": (r) => r.status === 401,

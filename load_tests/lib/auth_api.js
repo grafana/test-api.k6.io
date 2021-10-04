@@ -1,7 +1,7 @@
 import http from "k6/http";
 
 
-export const auth = function(baseURL) {
+export const authAPI = function(baseURL) {
 
     const register = function(credentials) {
         return http.post(`${baseURL}/user/register/`, credentials);
@@ -19,7 +19,8 @@ export const auth = function(baseURL) {
 
     const loginChecks = function() {
         return {
-            "logged in successfully": (r) => r.json('access') !== '',
+            "login successful": (r) => r.status === 200,
+            "access token is present": (r) => r.json('access') !== '',
         }
     }
     
@@ -32,7 +33,7 @@ export const auth = function(baseURL) {
         };
     }
 
-    const cookieLogin = function({ username, password, email }, timeToFirstByte) {
+    const cookieLogin = function({ username, password }) {
         return http.post(`${conf.baseURL}/auth/cookie/login/`, { username, password });
     }
 

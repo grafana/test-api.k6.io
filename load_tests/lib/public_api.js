@@ -2,7 +2,7 @@ import http from "k6/http";
 import { check } from "k6";
 
 
-export const publicApi = function(baseURL) {
+export const publicAPI = function(baseURL) {
 
   // call some public endpoints in batch
   const crocodiles = function(ids=[1,2,3,4]) {

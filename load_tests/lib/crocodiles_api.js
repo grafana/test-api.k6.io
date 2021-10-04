@@ -1,7 +1,7 @@
 import http from "k6/http";
 
 
-export const crocodiles = function(baseURL, commonParams={}) {
+export const crocodilesAPI = function(baseURL, commonParams={}) {
 
     const register = function(newCroc, params={}) {
         const reqParams = Object.assign({}, commonParams, params);
