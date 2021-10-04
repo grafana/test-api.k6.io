@@ -1,12 +1,21 @@
-import http from "k6/http";
-import jsonpath from "jslib.k6.io/jsonpath/1.0.2/index.js";
+import {group, sleep, fail, check} from "k6";
+import {Trend} from "k6/metrics";
 
-import {check, group, sleep, fail} from "k6";
-import {Counter, Rate, Trend} from "k6/metrics";
+import { authAPI } from "./lib/auth_api.js"
+import { crocodilesAPI } from "./lib/crocodiles_api.js"
+import { publicAPI } from "./lib/public_api.js"
+
+
+const conf = {
+  baseURL: __ENV.BASE_URL || "https://test-api.k6.io",
+  username: "nkjshjkcckjhxewewjfhxkjqehnqlx@example.com",
+  password: "secret"
+}
+
 
 export let options = {
   stages: [
-    {target: 200, duration: "1m"},
+    { target: 500, duration: "1m" },
   ],
   thresholds: {
     "http_req_duration": ["p(95)<500"],
@@ -15,107 +24,81 @@ export let options = {
   },
 };
 
-let BASE_URL = 'http://127.0.0.1:8000';
-let USERNAME = 'user';
-let PASSWORD = 'test123!';
-
-// var successfulLogins = new Counter("successful_logins");
-// var checkFailureRate = new Rate("check_failure_rate");
 let timeToFirstByte = new Trend("time_to_first_byte", true);
 
-
-export default () => {
-
-  group("Public endpoints", () => {
-    // call some public endpoints in batch
-
-    let responses = http.batch([
-      ["GET", `${BASE_URL}/public/crocodiles/1/`, {}, {tags: {name: "PublicCrocs"}}],
-      ["GET", `${BASE_URL}/public/crocodiles/2/`, {}, {tags: {name: "PublicCrocs"}}],
-      ["GET", `${BASE_URL}/public/crocodiles/3/`, {}, {tags: {name: "PublicCrocs"}}],
-      ["GET", `${BASE_URL}/public/crocodiles/4/`, {}, {tags: {name: "PublicCrocs"}}],
-    ]);
-
-    // check that all the crocodiles we fetched have names
-    Object.values(responses).map(resp => check(resp, {
-      "crocs have names": (resp) => resp.json('name') !== ''
-    }))
-
+export function setup() {
+  const { baseURL, username, password } = conf;
+  const auth = authAPI(baseURL);
+  const resp = auth.register({
+    first_name: "Crocodile",
+    last_name: "Owner",
+    username,
+    password,
+    email: username,
   });
+  check(resp, auth.registerChecks());
+}
 
+export default function() {
+    const { baseURL, username, password } = conf;
+    const auth = authAPI(baseURL);
+    const crocs = crocodilesAPI(baseURL);
+    const pb = publicAPI(baseURL);
 
-  group("Login", () => {
-    let loginRes = http.post(`${BASE_URL}/auth/cookie/login/`, {
-      username: USERNAME,
-      password: PASSWORD
+    let resp;
+
+    group("Public endpoints", () => {
+      resp = pb.crocodiles()
+      resp.map((r) => check(r, pb.crocodileChecks()))
     });
 
-    timeToFirstByte.add(loginRes.timings.waiting, {ttfbURL: loginRes.url});
+    group("Login", () => {
+      resp = auth.cookieLogin({ username, password })
 
-    check(loginRes, {
-      "login successful": (r) => r.status === 200,
-    }) || fail("could not log in");
+      check(
+        resp, auth.cookieLoginChecks(username)
+      ) || fail("could not log in");
+      
+      timeToFirstByte.add(resp.timings.waiting, {ttfbURL: resp.url});
 
-    check(loginRes, {
-      "user email is correct": (r) => jsonpath.value(r.json(), 'email') === 'user@example.com',
+      check(crocs.list(), crocs.listChecks()) || fail("could not get crocs")
     });
 
-    let crocsRes = http.get(`${BASE_URL}/my/crocodiles/`);
+    let newCrocID;
+    group("Retrieve and modify crocodiles", () => {
+        // create new croc
+        resp = crocs.register({
+          "name": "Curious George",
+          "sex": "M",
+          "date_of_birth": "1982-03-03",
+        }, { tags: { endpointType: "modifyCrocs" }});
+        check(resp, crocs.registerChecks()) || fail(`Unable to create croc ${resp.status} ${resp.body}`);
 
-    check(crocsRes, {
-      "Retrieved my Crocs": (r) => r.status === 200,
-    }) || fail("could not get crocs");
-  });
+        newCrocID = resp.json('id')
 
-  let newCrocId = null;
+        resp = crocs.rename(newCrocID, "New name", {tags: {name: 'Croc Operation'}})
+        check(resp, crocs.renameChecks("New name")) || fail(`Unable to update the croc ${resp.status} ${resp.body}`);
+    });
 
-  group("Retrieve and modify crocodiles", () => {
+    group("Delete and verify", () => {
+        check(
+          crocs.deregister(newCrocID, {tags: {name: 'Croc Operation'}}), crocs.deregisterChecks()
+        );
 
-    // create new croc
-    let newCrocResp = http.post(`${BASE_URL}/my/crocodiles/`, {
-      "name": "Curious George",
-      "sex": "M",
-      "date_of_birth": "1982-03-03",
-    }, {tags: {endpointType: "modifyCrocs"}});
+        resp = crocs.get(newCrocID, {tags: {name: 'Retrieve Deleted Croc'}});
+        check(resp, {
+          "crocNotFound": (r) => r.status === 404,
+        }) || fail("croc was not deleted properly");
+    });
 
-    check(newCrocResp, {
-      "Croc Created": (r) => r.status === 201,
-    }) || fail(`Unable to create croc ${newCrocResp.status} ${newCrocResp.body}`);
+    group("Log me out!", () => {
+        check(auth.cookieLogout(), auth.cookieLogoutChecks())
+  
+        check(crocs.list(), {
+          "got crocs": (r) => r.status === 401,
+        }) || fail("ERROR: I'm still logged in!");
 
-    newCrocId = newCrocResp.json('id');
+    });
 
-    let updateResp = http.patch(`${BASE_URL}/my/crocodiles/${newCrocId}/`, {name: "New name"}, {tags: {name: 'Croc Operation'}});
-
-    check(updateResp, {
-      "update succeeded": (r) => r.status === 200,
-      "croc name changed": (r) => r.json('name') === "New name",
-    }) || fail(`Unable to update the croc. Status: ${updateResp.status}`);
-  });
-
-  group("Delete and verify", () => {
-    let deleteCroc = http.del(`${BASE_URL}/my/crocodiles/${newCrocId}/`, null, {tags: {name: 'Croc Operation'}});
-    let getCroc = http.get(`${BASE_URL}/my/crocodiles/${newCrocId}/`, {tags: {name: 'Retrieve Deleted Croc'}});
-
-    check(deleteCroc, {
-      "Croc Deletion succeeded": () => deleteCroc.status === 204,
-      "Croc Not Found": () => getCroc.status === 404,
-    }) || fail(`Croc was not deleted properly`);
-
-  });
-
-  group("Log me out!", () => {
-    http.post(`${BASE_URL}/auth/cookie/logout/`);
-
-    let getCrocs = http.get(`${BASE_URL}/my/crocodiles/`);
-
-    // console.log(getCrocs.body, getCrocs.status)
-
-    check(getCrocs, {
-      "got crocs": (r) => r.status === 401,
-    }) || fail("ERROR: I'm still logged in!");
-
-  });
-
-
-  sleep(1);
+    sleep(1);
 }
