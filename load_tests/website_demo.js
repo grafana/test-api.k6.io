@@ -12,7 +12,7 @@ ext - Options used by Load Impact cloud service test name and distribution
 */
 export let options = {
     stages: [
-        { target: 2, duration: "1m" },
+        { target: 1000, duration: "3m" },
         // { target: 200, duration: "3m" },
         // { target: 0, duration: "1m" }
     ],
@@ -25,8 +25,8 @@ export let options = {
         loadimpact: {
             name: "Insights Demo with Cloud Execution",
             distribution: {
-                scenarioLabel1: { loadZone: "amazon:us:ashburn", percent: 50 },
-                scenarioLabel2: { loadZone: "amazon:ie:dublin", percent: 50 }
+                scenarioLabel1: { loadZone: "amazon:us:ashburn", percent: 100 },
+                // scenarioLabel2: { loadZone: "amazon:ie:dublin", percent: 50 }
             }
         }
     }

@@ -34,8 +34,8 @@ export const webPage = function(baseURL, urlAlert=false) {
 
     const staticAssets = function() {
         return http.batch([
-            ["GET", `${baseURL}/style.css`, {}, { tags: { staticAsset: "yes" } }],
-            ["GET", `${baseURL}/images/logo.png`, {}, { tags: { staticAsset: "yes" } }]
+            ["GET", `${baseURL}/static/css/site.css`, {}, { tags: { staticAsset: "yes" } }],
+            ["GET", `${baseURL}/static/js/prisms.js`, {}, { tags: { staticAsset: "yes" } }]
         ]);
     }
 

@@ -15,7 +15,7 @@ function randomString(anysize) {
 
 
 const conf = {
-  baseURL: __ENV.BASE_URL || "https://test-api.k6.io",
+  baseURL: __ENV.BASE_URL || "https://test-api-main.staging.k6.io",
   username: `${randomString(20)}@example.com`,
   password: "secret"
 }
@@ -23,7 +23,7 @@ const conf = {
 
 export let options = {
   stages: [
-    { target: 1000, duration: "3m" },
+    { target: 500, duration: "3m" },
   ],
   thresholds: {
     "http_req_duration": ["p(95)<500"],
