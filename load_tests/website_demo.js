@@ -25,8 +25,8 @@ export let options = {
         loadimpact: {
             name: "Insights Demo with Cloud Execution",
             distribution: {
-                scenarioLabel1: { loadZone: "amazon:us:ashburn", percent: 100 },
-                // scenarioLabel2: { loadZone: "amazon:ie:dublin", percent: 50 }
+                // scenarioLabel1: { loadZone: "amazon:us:ashburn", percent: 100 },
+                scenarioLabel2: { loadZone: "amazon:ie:dublin", percent: 100 }
             }
         }
     }

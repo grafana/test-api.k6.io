@@ -10,8 +10,12 @@ export let options = {
   iterations: 10,
 };
 
+const conf = {
+  baseURL: __ENV.BASE_URL || "wss://test-api.k6.io",
+}
+
 export default function () {
-  let url = `wss://test-api.k6.io/ws/crocochat/${chatRoomName}/`;
+  let url = `${conf.baseURL}/ws/crocochat/${chatRoomName}/`;
   let params = { tags: { my_tag: 'my ws session' } };
 
   let res = ws.connect(url, params, function (socket) {
