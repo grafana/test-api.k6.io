@@ -22,18 +22,24 @@ urlpatterns = [
     path('auth/basic/login/', session_basic.LoginView.as_view()),
     path('auth/basic/logout/', session_basic.LogoutView.as_view()),
 
-    path('auth/token/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('auth/token/login/', TokenObtainPairView.as_view(),
+         name='token_obtain_pair'),
     path('auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     path('user/register/', UserCreateAPIView.as_view()),
 
-    path('my/crocodiles/', MyCrocodilesViewSet.as_view({'get': 'list', 'post': 'create'})),
+    path('my/crocodiles/',
+         MyCrocodilesViewSet.as_view({'get': 'list', 'post': 'create'})),
     path('my/crocodiles/<int:pk>/', MyCrocodilesViewSet.as_view({'get': 'retrieve',
                                                                  'put': 'update',
                                                                  'patch': 'partial_update',
                                                                  'delete': 'destroy',
                                                                  })),
 
-    path('public/crocodiles/', PublicCrocodilesViewSet.as_view({'get': 'list'})),
-    path('public/crocodiles/<int:pk>/', PublicCrocodilesViewSet.as_view({'get': 'retrieve'})),
+    path('public/crocodiles/',
+         PublicCrocodilesViewSet.as_view({'get': 'list'})),
+    path('public/crocodiles/<int:pk>/',
+         PublicCrocodilesViewSet.as_view({'get': 'retrieve'})),
+
+    url('', include('django_prometheus.urls')),
 ]

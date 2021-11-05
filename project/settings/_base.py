@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'django_prometheus',
 
     'apps.api',
     'apps.pages',
@@ -27,10 +28,15 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # DjangoPrometheus Before Middleware needs to be first
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+
+    'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
 TEMPLATES = [
@@ -60,7 +66,6 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
     },
 }
-
 
 
 AUTH_PASSWORD_VALIDATORS = [

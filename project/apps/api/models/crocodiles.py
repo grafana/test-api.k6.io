@@ -1,11 +1,13 @@
 import datetime
 from dateutil.relativedelta import relativedelta
-from django.contrib.auth.models import User
 
+from django.contrib.auth.models import User
 from django.db import models
 
+from django_prometheus.models import ExportModelOperationsMixin
 
-class Crocodile(models.Model):
+
+class Crocodile(ExportModelOperationsMixin('crocodile'), models.Model):
     CROC_SEX = (
         ('M', 'Male'),
         ('F', 'Female'),

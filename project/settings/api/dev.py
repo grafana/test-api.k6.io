@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django_secrets import AwsSecrets
 from .._base import *
 
@@ -12,9 +14,13 @@ DEBUG = True
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django_prometheus.db.backends.sqlite3',
         'NAME': os.path.join(WORK_DIR, 'db.sqlite3'),
     },
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=3),
 }
 
 SECRET_KEY = 'secret'
