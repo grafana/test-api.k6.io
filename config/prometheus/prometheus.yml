@@ -1,0 +1,14 @@
+global:
+  scrape_interval: 10s
+  evaluation_interval: 10s
+
+  external_labels:
+    monitor: test-api-monitor
+
+rule_files:
+  - "test-api.rules"
+
+scrape_configs:
+  - job_name: "test-api"
+    static_configs:
+      - targets: ["host.docker.internal:8000"]

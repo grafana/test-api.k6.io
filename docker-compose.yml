@@ -17,3 +17,11 @@ services:
       - "8000:8000"
     environment:
       - LOADIMPACT_ENVIRONMENT=dev
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - "./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
+      - "./config/prometheus/test-api.rules:/etc/prometheus/test-api.rules"
