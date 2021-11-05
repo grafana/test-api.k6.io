@@ -11,6 +11,15 @@ It contains several authentication mechanisms, private and public endpoints, etc
 
 # development 
 
+## Prerequisites
+
+```bash
+sudo apt install libmysqlclient-dev  # debian/ubuntu
+pip install wheel
+```
+
+## Setting up your local development environment
+
 ```bash
 cd test-api.k6.io
 python3 -m venv .venv
