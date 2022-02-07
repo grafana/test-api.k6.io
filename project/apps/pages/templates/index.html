@@ -23,7 +23,7 @@
         </div>
         <ul class="header-icons">
             <li>
-                <a href="https://github.com/loadimpact/k6">
+                <a href="https://github.com/grafana/k6">
                     <svg height="20" width="20" aria-hidden="true" focusable="false"
                          viewBox="0 0 496 512">
                         <path fill="currentColor"
