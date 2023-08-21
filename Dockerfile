@@ -26,11 +26,11 @@ RUN apk add --no-cache \
     rm -r /root/.cache
 
 # Copy the Nginx configs
-COPY devops/conf/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY devops/conf/nginx/test-api.k6.io /etc/nginx/sites-enabled/test-api.k6.io
+COPY devenv/conf/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY devenv/conf/nginx/test-api.k6.io /etc/nginx/sites-enabled/test-api.k6.io
 
 # Custom Supervisord config
-COPY devops/conf/supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY devenv/conf/supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Add source code
 COPY . /srv/test-api.k6.io/

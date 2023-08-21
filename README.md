@@ -49,7 +49,7 @@ python project/manage.py makemigrations && python project/manage.py migrate
 Load fixture with initial data to populate the database with some users and crocodiles:
 
 ```sh
-./devops/loaddata.sh
+python project/manage.py loaddata project/fixtures/initial.json
 ```
 
 Run django server:
