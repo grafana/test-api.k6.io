@@ -16,4 +16,4 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - LOADIMPACT_ENVIRONMENT=dev
+      - ENVIRONMENT_NAME=dev

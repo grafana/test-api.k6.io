@@ -55,7 +55,7 @@ Load fixture with initial data to populate the database with some users and croc
 Run django server:
 
 ```sh
-LOADIMPACT_ENVIRONMENT=dev python project/manage.py runserver
+ENVIRONMENT_NAME=dev python project/manage.py runserver
 ```
 
 You should now be able to access it at http://localhost:8000.

@@ -1,6 +1,6 @@
 from os import environ
 
-env = environ.get("LOADIMPACT_ENVIRONMENT")
+env = environ.get("ENVIRONMENT_NAME")
 if env == 'dev':
     from .dev import *
 elif env == 'production':
@@ -16,4 +16,4 @@ elif env == 'k8s':
 elif not env:
     from .default import *
 else:
-    raise Exception(f'LOADIMPACT_ENVIRONMENT env incorrect: {env}')
+    raise Exception(f'ENVIRONMENT_NAME env incorrect: {env}')
