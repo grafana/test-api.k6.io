@@ -6,8 +6,8 @@ let sessionDuration = randomIntBetween(5000, 60000); // user session between 5s 
 let chatRoomName = 'publicRoom'; // choose your chat room name
 
 export let options = {
-  vus: 10,
-  iterations: 10,
+  duration: '20s',
+  vus: 5,
 };
 
 const conf = {

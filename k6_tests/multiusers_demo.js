@@ -5,9 +5,8 @@ import { crocodilesAPI } from "./lib/crocodiles_api.js"
 
 
 export let options = {
-    stages: [
-        { target: 100, duration: "300s" },
-    ],
+    duration: '20s',
+    vus: 5,
     thresholds: {
         "http_req_duration": ["p(95)<500"]
     },

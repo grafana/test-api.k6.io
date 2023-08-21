@@ -34,7 +34,7 @@ export const authAPI = function(baseURL) {
     }
 
     const cookieLogin = function({ username, password }) {
-        return http.post(`${conf.baseURL}/auth/cookie/login/`, { username, password });
+        return http.post(`${baseURL}/auth/cookie/login/`, { username, password });
     }
 
     const cookieLoginChecks = function(email) {
@@ -45,7 +45,7 @@ export const authAPI = function(baseURL) {
     }
 
     const cookieLogout = function() {
-        return http.post(`${conf.baseURL}/auth/cookie/logout/`);
+        return http.post(`${baseURL}/auth/cookie/logout/`);
     }
 
     const cookieLogoutChecks = function() {

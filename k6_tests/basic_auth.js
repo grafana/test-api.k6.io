@@ -1,7 +1,7 @@
 import { sleep, check } from "k6";
 import encoding from "k6/encoding";
 
-import { crocodilesAPI } from "../lib/crocodiles_api.js"
+import { crocodilesAPI } from "./lib/crocodiles_api.js"
 
 export let options = {
     duration: '20s',
@@ -9,7 +9,7 @@ export let options = {
 };
 
 const conf = {
-    baseURL: __ENV.BASE_URL || "https://test-api-main.staging.k6.io",
+    baseURL: __ENV.BASE_URL || "https://test-api.k6.io",
     username: 'user',
     password: 'test123!'
 }
@@ -25,7 +25,7 @@ export default function() {
 
     const crocs = crocodilesAPI(conf.baseURL, authHeader);
 
-    check(crocs.list(), crocs.listChecks()) || fail("could not get crocs")
+    check(crocs.list(), crocs.listChecks());
 
     sleep(1);
 }

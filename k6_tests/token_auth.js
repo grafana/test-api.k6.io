@@ -1,11 +1,11 @@
 import { check, sleep } from "k6";
 
-import { authAPI } from "../lib/auth_api.js"
-import { crocodilesAPI } from "../lib/crocodiles_api.js"
+import { authAPI } from "./lib/auth_api.js"
+import { crocodilesAPI } from "./lib/crocodiles_api.js"
 
 
 export let options = {
-    duration: '1m',
+    duration: '20s',
     vus: 5,
 };
 

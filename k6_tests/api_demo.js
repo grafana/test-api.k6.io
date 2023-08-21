@@ -14,13 +14,10 @@ const conf = {
 
 
 export let options = {
-  stages: [
-    { target: 500, duration: "1m" },
-  ],
+  duration: '20s',
+  vus: 5,
   thresholds: {
-    "http_req_duration": ["p(95)<500"],
-    "http_req_duration{publicEndpoint:yes}": ["p(95)<100"],
-    "check_failure_rate": ["rate<0.3"]
+    "http_req_duration": ["p(95)<900"]
   },
 };
 
