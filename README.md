@@ -7,35 +7,56 @@
 <img src="static_resources/github-hr.png" alt="---" />
 <br/>
 
-It contains several authentication mechanisms, private and public endpoints, etc. 
-
-# development 
-
-## Prerequisites
-
-```bash
-sudo apt install libmysqlclient-dev  # debian/ubuntu
-pip install wheel
-```
+It contains multiple authentication mechanisms, both private and public, as well as HTTP and websocket endpoints.
 
 ## Setting up your local development environment
 
+Using docker-compose:
+
 ```bash
+docker-compose up -d
+```
+
+By default, it runs a local `SQLite` database.
+
+You should now be able to access it at http://localhost:8000/
+
+Alternatively, you can set up the project using `python` and `pip`: 
+
+```sh
 cd test-api.k6.io
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-./project/manage.py runserver
 ```
 
-### Load initial data
-We have a fixture with initial data that populated the prod/dev database with some users and crocodiles.
-This generally is run automatically via docker-compose.
+You will likely need to install some dependencies not installed in your system. For example:
 
 ```sh
-cd test_api
+sudo apt install libmysqlclient-dev  # debian/ubuntu
+pip install wheel
+```
+
+Once you have set up all the project dependencies, configure the database:
+
+```sh
+python project/manage.py makemigrations && python project/manage.py migrate
+```
+
+Load fixture with initial data to populate the database with some users and crocodiles:
+
+```sh
 ./devops/loaddata.sh
 ```
+
+Run django server:
+
+```sh
+LOADIMPACT_ENVIRONMENT=dev python project/manage.py runserver
+```
+
+You should now be able to access it at http://localhost:8000. In this case, the style assets are not loaded.
+
 
 ### Browseable API
 
