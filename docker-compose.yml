@@ -1,8 +1,6 @@
 version: '3'
 
-# this is used only for development. We don't use it in production.
-# I'm overriding bunch of things defined in the Dockerfile
-
+# this is used only for development. 
 
 services:
   test_api:

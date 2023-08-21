@@ -38,8 +38,4 @@ COPY . /srv/test-api.k6.io/
 # Collect static files
 RUN python project/manage.py collectstatic --noinput -v1
 
-# Add ecs environment variable for non-root processes
-RUN echo 'export $(strings /proc/1/environ | grep AWS_CONTAINER_CREDENTIALS_RELATIVE_URI)' >> /root/.profile
-RUN echo 'export $(strings /proc/1/environ | grep AWS_CONTAINER_CREDENTIALS_RELATIVE_URI)' >> /home/www-data/.profile
-
 CMD ["/usr/local/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

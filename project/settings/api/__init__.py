@@ -3,11 +3,6 @@ from os import environ
 env = environ.get("ENVIRONMENT_NAME")
 if env == 'dev':
     from .dev import *
-elif env == 'production':
-    from .production import *
-elif env == 'staging':
-    from .staging import *
-
 elif env == 'k8s':
     # In k8s setup settings come from env vars, specified in the Deployment api object and
     # configured in k8s ConfigMap or ExternalSecret api objects.
