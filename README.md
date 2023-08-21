@@ -9,17 +9,20 @@
 
 It contains multiple authentication mechanisms, both private and public, as well as HTTP and websocket endpoints.
 
-## Setting up your local development environment
+## Set up your local development environment
 
-Using docker-compose:
+Using `docker-compose`:
 
 ```bash
 docker-compose up -d
 ```
 
-By default, it runs a local `SQLite` database.
-
 You should now be able to access it at http://localhost:8000/
+
+By default, the data is stored in a local `SQLite` database.
+
+
+### Using `python` and `pip`
 
 Alternatively, you can set up the project using `python` and `pip`: 
 
@@ -55,12 +58,11 @@ Run django server:
 LOADIMPACT_ENVIRONMENT=dev python project/manage.py runserver
 ```
 
-You should now be able to access it at http://localhost:8000. In this case, the style assets are not loaded.
+You should now be able to access it at http://localhost:8000.
 
 
-### Browseable API
+## Browseable API
 
 Nice feature of this project is that APIs are "browseable", and can be easily explored by developers via the web interface.
 
-Explore this by clicking on one of the endpoints, for example [/public/crocodiles/](http://test-api.k6.io/public/crocodiles)
-and login (top right corner) with one of the default users.
+Explore this by clicking on one of the endpoints, for example [/public/crocodiles/](http://test-api.k6.io/public/crocodiles) and login (top right corner) with one of the default users.
