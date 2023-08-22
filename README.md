@@ -1,17 +1,15 @@
-<p align="center"><a href="https://k6.io/"><img src="static_resources/logo.svg" alt="k6" width="220" height="213" /></a></p>
 
-<h3 align="center">test-api.k6.io</h3>
-<p align="center">Simple REST API project that is a good target for experimental load testing.</p>
+# k6 REST and WS API Play
 
-<br/>
-<img src="static_resources/github-hr.png" alt="---" />
-<br/>
+A simple REST and Websocket service designed for experimentation with k6. It contains various authentication mechanisms, both private and public, and includes both HTTP and Websocket endpoints.
 
-It contains multiple authentication mechanisms, both private and public, as well as HTTP and websocket endpoints.
+You can access this service at https://test-api.k6.io/
+
+The [`k6_tests` folder](./k6_tests) includes a few k6 examples for this service.
 
 ## Set up your local development environment
 
-Using `docker-compose`:
+You can also deploy this service on your local machine or infrastructure.  Using `docker-compose`:
 
 ```bash
 docker-compose up -d
