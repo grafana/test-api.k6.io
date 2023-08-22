@@ -2,6 +2,10 @@ import { randomString, randomIntBetween } from "https://jslib.k6.io/k6-utils/1.1
 import ws from 'k6/ws';
 import { check, sleep } from 'k6';
 
+
+// This example uses the `k6/ws` module. 
+// `k6/experimental/websockets` is a new module with a better and standard API. We recommend using the new API. 
+
 let sessionDuration = randomIntBetween(5000, 60000); // user session between 5s and 1m
 let chatRoomName = 'publicRoom'; // choose your chat room name
 
