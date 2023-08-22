@@ -4,7 +4,8 @@ PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 WORK_DIR = os.path.join(BASE_DIR, 'workdir')
 
-SECRET_KEY = 'yglwkx*30p3wl_ef#)p)26+%=gm#4urb#3mv18@cfzkegggn%)'
+# overwritten for specific environments
+SECRET_KEY = 'secret'
 
 DEBUG = False
 
