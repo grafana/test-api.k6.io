@@ -175,6 +175,9 @@ a:not(:hover) {
   margin-bottom: 0;
   font-weight: 300;
 }
+.description > .note {
+  font-size: 14px;
+}
 
 .header {
   position: relative;
