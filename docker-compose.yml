@@ -1,0 +1,19 @@
+version: '3'
+
+# this is used only for development. 
+
+services:
+  test_api:
+    image: test_api
+    build:
+      context: .
+      dockerfile: devenv/Dockerfile
+    command: sh -c "python project/manage.py makemigrations && python project/manage.py migrate && python project/manage.py loaddata project/fixtures/initial.json && python project/manage.py runserver 0.0.0.0:8000"
+    container_name: test_api
+    working_dir: /srv/test-api.k6.io
+    volumes:
+      - .:/srv/test-api.k6.io
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT_NAME=dev

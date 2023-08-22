@@ -1,0 +1,5 @@
+.idea
+*.pyc
+workdir/static_root/
+.venv/
+workdir/db.sqlite3

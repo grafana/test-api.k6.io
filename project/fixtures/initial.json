@@ -1,0 +1,118 @@
+[
+    {
+        "model": "auth.user",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$150000$9EXAaaEf8DoJ$NvH/2P0X8Om5/syYxFw97lgeBOzPbwd01ZZBcJSDSmw=",
+            "last_login": "2019-07-01T14:31:50.689Z",
+            "is_superuser": true,
+            "username": "admin",
+            "first_name": "Admin",
+            "last_name": "Bert",
+            "email": "developers@k6.io",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2019-06-25T13:56:24Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 2,
+        "fields": {
+            "password": "pbkdf2_sha256$150000$9EXAaaEf8DoJ$NvH/2P0X8Om5/syYxFw97lgeBOzPbwd01ZZBcJSDSmw=",
+            "last_login": "2019-07-02T10:31:10.660Z",
+            "is_superuser": false,
+            "username": "user",
+            "first_name": "",
+            "last_name": "",
+            "email": "user@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2019-06-27T14:07:08Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "api.crocodile",
+        "pk": 1,
+        "fields": {
+            "name": "Bert",
+            "sex": "M",
+            "date_of_birth": "2010-06-27",
+            "owner": null
+        }
+    },
+    {
+        "model": "api.crocodile",
+        "pk": 2,
+        "fields": {
+            "name": "Ed",
+            "sex": "M",
+            "date_of_birth": "1995-02-27",
+            "owner": null
+        }
+    },
+    {
+        "model": "api.crocodile",
+        "pk": 3,
+        "fields": {
+            "name": "Lyle the Crocodile",
+            "sex": "M",
+            "date_of_birth": "1985-03-03",
+            "owner": null
+        }
+    },
+    {
+        "model": "api.crocodile",
+        "pk": 4,
+        "fields": {
+            "name": "Solomon",
+            "sex": "M",
+            "date_of_birth": "1993-12-25",
+            "owner": null
+        }
+    },
+    {
+        "model": "api.crocodile",
+        "pk": 5,
+        "fields": {
+            "name": "The gharial",
+            "sex": "F",
+            "date_of_birth": "2004-06-28",
+            "owner": null
+        }
+    },
+    {
+        "model": "api.crocodile",
+        "pk": 6,
+        "fields": {
+            "name": "Sang Buaya",
+            "sex": "F",
+            "date_of_birth": "2006-01-28",
+            "owner": null
+        }
+    },
+    {
+        "model": "api.crocodile",
+        "pk": 7,
+        "fields": {
+            "name": "Sobek",
+            "sex": "F",
+            "date_of_birth": "1854-09-02",
+            "owner": null
+        }
+    },
+    {
+        "model": "api.crocodile",
+        "pk": 8,
+        "fields": {
+            "name": "Curious George",
+            "sex": "M",
+            "date_of_birth": "1981-01-03",
+            "owner": null
+        }
+    }
+]
