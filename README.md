@@ -48,6 +48,9 @@ Load fixture with initial data to populate the database with some users and croc
 
 ```sh
 python project/manage.py loaddata project/fixtures/initial.json
+
+# user: admin/test123!
+# user: user/test123!
 ```
 
 Run django server:
