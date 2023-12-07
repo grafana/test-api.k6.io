@@ -1,4 +1,4 @@
-FROM python:3.9.5-alpine
+FROM python:3.11-alpine
 
 EXPOSE 80
 ENV PYTHONUNBUFFERED 1
