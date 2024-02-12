@@ -1,0 +1,87 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: rlespinasse/github-slug-action@v4
+      - name: Check Out Repo 
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.K6_DOCKERHUB_USERNAME }}
+          password: ${{ secrets.K6_DOCKERHUB_TOKEN }}      
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./k8s/Dockerfile
+          cache-from: type=gha,scope=dev
+          cache-to: type=gha,scope=dev,mode=max
+          push: true
+          tags: |
+            ${{ github.repository }}:${{ env.GITHUB_REF_NAME_SLUG }}-dev
+            ${{ github.repository }}:${{ github.sha }}-dev
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+  Run-Tests:
+    runs-on: ubuntu-latest
+    needs: [build]
+    services:
+      test-api:
+        image: ${{ github.repository }}:${{ github.sha }}-dev
+        credentials:
+          username: ${{ secrets.K6_DOCKERHUB_USERNAME }}
+          password: ${{ secrets.K6_DOCKERHUB_TOKEN }}
+        env:
+          ENVIRONMENT_NAME: 'k8s'
+          DB_ENGINE: 'django.db.backends.mysql'
+          DB_NAME: 'test'
+          DB_USER: 'testuser'
+          DB_PASSWORD: 'testpassword'
+          DB_HOST: 'mysql'
+          DB_PORT: '3306'
+          DJANGO_SECRET_KEY: 'secret'
+          DEBUG: "false"
+          ROOT_URLCONF: "urls.production"
+        ports:
+          - 80:8000
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: test
+          MYSQL_USER: testuser
+          MYSQL_PASSWORD: testpassword
+          MYSQL_ROOT_PASSWORD: testrootpass
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.K6_DOCKERHUB_USERNAME }}
+          password: ${{ secrets.K6_DOCKERHUB_TOKEN }}
+      - name: Apply database migrations
+        run: |
+          docker run --env-file ${{ github.workspace }}/.github/.ci-env-config --network ${{ job.container.network }} ${{ github.repository }}:${{ github.sha }}-dev sh -c "python manage.py collectstatic --noinput -v1 && python manage.py migrate && python manage.py loaddata fixtures/initial.json"
+      - name: Run k6 http test
+        run: |
+          docker run --env BASE_URL="http://localhost:80" --network host -v ${{ github.workspace }}:/data/ grafana/k6:latest run /data/k6_tests/api_demo.js
