@@ -1,0 +1,10 @@
+ENVIRONMENT_NAME=k8s
+DB_ENGINE=django.db.backends.mysql
+DB_NAME=test
+DB_USER=testuser
+DB_PASSWORD=testpassword
+DB_HOST=mysql
+DB_PORT=3306
+DJANGO_SECRET_KEY=secret
+DEBUG=false
+ROOT_URLCONF=urls.production

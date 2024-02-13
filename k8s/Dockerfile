@@ -1,17 +1,28 @@
-FROM python:3.9-slim-bullseye
+FROM python:3.9-alpine
 
-RUN apt-get update && apt-get -y upgrade && \
-    export DEBIAN_FRONTEND=noninteractive && \
-    apt-get -y install --no-install-recommends \
-        gcc \
-        default-libmysqlclient-dev && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+ENV PYTHONUNBUFFERED 1
 
-RUN useradd --uid 1000 --create-home appuser
+RUN adduser -u 82 -D -S -G www-data appuser
+
+RUN apk update && \
+    apk upgrade && \
+    apk add --no-cache \
+    nginx \
+    musl-dev \
+    cargo \
+    gcc \
+    openssl-dev \
+    libexpat \
+    libffi-dev \
+    build-base \
+    mysql-dev \
+    mariadb-connector-c-dev && \
+    rm -r /usr/local/lib/python*/ensurepip && \
+    pip3 install --upgrade pip==23.3 && \
+    rm -r /root/.cache
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 USER appuser
 
