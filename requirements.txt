@@ -11,4 +11,4 @@ setuptools==65.5.1
 boto3==1.26
 
 daphne==3.0.2
-gunicorn==20.1.0
+gunicorn==22.0.0
