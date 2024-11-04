@@ -136,3 +136,9 @@ REST_FRAMEWORK = {
         "api.utils.CsrfExemptSessionAuthentication",
     ]
 }
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    },
+}

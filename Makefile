@@ -9,4 +9,5 @@ format:
 	poetry run ruff format
 
 serve:
+	poetry run python manage.py collectstatic --noinput
 	poetry run uvicorn --port 8000 base.asgi:application
