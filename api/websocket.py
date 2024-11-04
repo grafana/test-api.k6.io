@@ -1,6 +1,5 @@
 import json
 
-from autobahn.exception import Disconnected
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
 
@@ -119,6 +118,6 @@ class CrocoChatRoom(AsyncJsonWebsocketConsumer):
         # Send message to WebSocket
         try:
             await self.send(text_data=json.dumps(res))
-        except Disconnected:
+        except Exception:
             # Attempted to send on a closed socket
             pass

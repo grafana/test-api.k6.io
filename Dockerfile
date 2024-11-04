@@ -1,7 +1,5 @@
 FROM python:3.12-alpine
 
-RUN adduser -u 82 -D -S -G www-data appuser
-
 RUN apk update && \
     apk upgrade && \
     apk add --no-cache \
@@ -25,16 +23,13 @@ RUN python3 -m venv $POETRY_HOME && \
     $POETRY_HOME/bin/pip install pip setuptools -U && \
     $POETRY_HOME/bin/pip install poetry==$POETRY_VERSION
 
-USER appuser
-
 WORKDIR /app
 
-COPY pyproject.toml poetry.lock .
+ADD pyproject.toml poetry.lock .
 RUN $POETRY_HOME/bin/poetry install
 
-COPY ./project ./project
-COPY ./static_resources ./static_resources
+ADD api api
+ADD base base
+ADD static static
 
-WORKDIR /app/project
-
-CMD ["/opt/poetry/bin/poetry", "run", "uvicorn", "--host", "0.0.0.0", "--port", "8000", "base.wsgi:application"]
+CMD ["/opt/poetry/bin/poetry", "run", "uvicorn", "--host", "0.0.0.0", "--port", "8000", "base.asgi:application"]
