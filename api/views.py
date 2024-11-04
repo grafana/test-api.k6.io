@@ -5,7 +5,6 @@ from rest_framework import (
     mixins,
     permissions,
     response,
-    serializers,
     viewsets,
 )
 from rest_framework.exceptions import ValidationError
@@ -13,7 +12,12 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 
 from api.models import Crocodile
-from api.serializers import CrocodileSerializer, LoginSerializer, UserSerializer
+from api.serializers import (
+    CrocodileSerializer,
+    LoginSerializer,
+    UserAuthSerializer,
+    UserSerializer,
+)
 
 
 class MyCrocodilesViewSet(
@@ -74,12 +78,6 @@ class UserCreateAPIView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (AllowAny,)
-
-
-class UserAuthSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ("id", "username", "first_name", "last_name", "email", "date_joined")
 
 
 class LogoutView(APIView):

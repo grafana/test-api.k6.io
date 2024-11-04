@@ -50,3 +50,9 @@ class UserSerializer(serializers.ModelSerializer):
         if User.objects.filter(username=username).count() > 0:
             raise ValidationError("User with this username already exists!")
         return username
+
+
+class UserAuthSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("id", "username", "first_name", "last_name", "email", "date_joined")
