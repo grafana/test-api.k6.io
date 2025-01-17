@@ -1,3 +1,2 @@
 # k6 REST and WS API Play
-
-TODO
+# NOTE: Deprecated, use https://github.com/grafana/quickpizza instead.
